@@ -1,0 +1,54 @@
+# AgentScope AI Interview - 示例配置文件
+# 用于 v0.1 核心框架测试
+
+# 模型配置
+model:
+  name: "deepseek-chat"      # 模型名称
+  temperature: 0.7            # 温度参数 (0-1)
+  max_tokens: 2048            # 最大生成 token 数
+  top_p: 0.9                  # 核采样参数
+  timeout: 60                 # API 超时时间 (秒)
+
+# 对话配置
+dialogue:
+  max_turns: 10               # 最大对话轮数
+  timeout_seconds: 300        # 对话超时时间 (秒)
+  save_history: true          # 是否保存对话历史
+
+# Agent 配置
+agent:
+  # 面试官配置
+  interviewer:
+    name: "张面试官"
+    style: "friendly"         # friendly/strict/pressure
+    domain: "general"         # general/tech/hr/management
+  
+  # 观察者配置
+  observer:
+    name: "AI 观察者"
+    focus_areas:
+      - communication
+      - technical_depth
+      - problem_solving
+  
+  # 评估员配置
+  evaluator:
+    name: "AI 评估员"
+    dimensions:
+      - content_quality       # 内容质量
+      - expression_clarity    # 表达清晰度
+      - professional_knowledge # 专业知识
+      - logical_thinking      # 逻辑思维
+      - communication_skill   # 沟通技巧
+
+# 场景配置 (v0.2 启用)
+scene:
+  type: "interview"           # interview/salon/meeting
+  difficulty: 3               # 1-5 难度级别
+  language: "zh-CN"           # 语言
+
+# 日志配置
+logging:
+  level: "INFO"               # DEBUG/INFO/WARNING/ERROR
+  file: "logs/interview.log"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
