@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}首页 - AgentScope AI Interview{% endblock %}
+
+{% block content %}
+<div class="home-container">
+    <!-- 欢迎区域 -->
+    <section class="hero-section">
+        <h1 class="hero-title">
+            <span class="hero-icon">🎯</span>
+            AI 模拟面试平台
+        </h1>
+        <p class="hero-subtitle">
+            专业的 AI 驱动面试模拟训练系统，帮助您提升面试技能
+        </p>
+
+        <div class="hero-actions">
+            <a href="/scenes" class="btn btn-primary btn-lg">
+                开始面试
+                <span class="btn-icon">→</span>
+            </a>
+            <a href="#" class="btn btn-secondary btn-lg" id="demo-btn">
+                观看演示
+            </a>
+        </div>
+    </section>
+
+    <!-- 特性展示 -->
+    <section class="features-section">
+        <h2 class="section-title">核心特性</h2>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🎭</div>
+                <h3>多种面试场景</h3>
+                <p>技术面试、HR 面试、系统设计等多样化场景，满足不同需求</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3>AI 智能面试官</h3>
+                <p>基于大语言模型的智能面试官，支持友好/严格/压力等多种风格</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>详细评估报告</h3>
+                <p>多维度能力评估，提供具体的改进建议和成长路径</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">💬</div>
+                <h3>实时对话交互</h3>
+                <p>流畅的对话体验，支持打字指示器和实时响应</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>多平台支持</h3>
+                <p>支持 CLI 和 Web 两种界面，随时随地进行练习</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>隐私保护</h3>
+                <p>本地运行，数据不上传，保护您的隐私安全</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 使用流程 -->
+    <section class="steps-section">
+        <h2 class="section-title">使用流程</h2>
+
+        <div class="steps-container">
+            <div class="step-item">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>选择场景</h3>
+                    <p>从多种面试场景中选择适合您的类型</p>
+                </div>
+            </div>
+
+            <div class="step-item">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>开始对话</h3>
+                    <p>与 AI 面试官进行实时对话交流</p>
+                </div>
+            </div>
+
+            <div class="step-item">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>获取反馈</h3>
+                    <p>查看详细的能力评估和改进建议</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 统计信息 -->
+    <section class="stats-section">
+        <div class="stat-item">
+            <div class="stat-value">6+</div>
+            <div class="stat-label">面试场景</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">5</div>
+            <div class="stat-label">评估维度</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">∞</div>
+            <div class="stat-label">练习次数</div>
+        </div>
+    </section>
+</div>
+
+<script>
+// 首页特定脚本
+document.addEventListener('DOMContentLoaded', function() {
+    // 演示按钮点击
+    const demoBtn = document.getElementById('demo-btn');
+    if (demoBtn) {
+        demoBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('演示功能开发中...');
+        });
+    }
+});
+</script>
+{% endblock %}
