@@ -21,9 +21,10 @@ from .dialogue_manager import (
     DialogueManager,
     DialogueContext,
     DialogueResult,
+    DialogueManagerBuilder,
 )
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 __all__ = [
     # Config
@@ -41,4 +42,5 @@ __all__ = [
     "DialogueManager",
     "DialogueContext",
     "DialogueResult",
+    "DialogueManagerBuilder",
 ]

@@ -198,11 +198,13 @@ def main():
     
     # 4. 选择运行模式
     if len(sys.argv) > 1 and sys.argv[1] == "--auto":
-        # 自动模式
-        manager.start()
-        run_auto_mode(manager)
+        # 自动模式 - 使用 run() 方法运行完整对话
+        print("\n🤖 自动对话模式启动...\n")
+        result = manager.run("你好，我准备好了，请开始面试吧！")
+        print(f"✅ 对话完成，总轮数：{result.metadata.get('total_turns', 0)}")
     else:
-        # 交互模式
+        # 交互模式 - 使用 start() 方法初始化，然后逐轮运行
+        print("\n💬 交互模式启动，请输入你的第一句话...\n")
         manager.start()
         run_interactive_mode(manager)
     

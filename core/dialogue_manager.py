@@ -136,27 +136,26 @@ class DialogueManager:
         for agent in self.agents:
             if not agent.is_initialized():
                 agent.initialize()
-    
-    def start(self, user_message: Optional[str] = None) -> DialogueResult:
+
+    def start(self, user_message: Optional[str] = None) -> None:
         """
-        开始对话
-        
+        开始对话（初始化）
+
         Args:
             user_message: 可选的初始用户消息
-            
-        Returns:
-            对话结果
-            
+
         Example:
-            >>> result = manager.start("你好，我准备好了")
+            >>> manager.start("你好，我准备好了")
+            >>> agent, msg = manager.run_turn()
         """
         self._is_running = True
         self._current_turn = 0
+        self._start_time = time.time()
         self.context.clear()
-        
+
         # 初始化 Agent
         self.initialize()
-        
+
         # 添加初始消息
         if user_message:
             self.context.add_message(Message(
@@ -164,15 +163,31 @@ class DialogueManager:
                 role="user",
                 type=MessageType.USER,
             ))
-        
-        # 运行对话
+
+    def run(self, user_message: Optional[str] = None) -> DialogueResult:
+        """
+        运行完整对话流程（自动模式）
+
+        Args:
+            user_message: 可选的初始用户消息
+
+        Returns:
+            对话结果
+
+        Example:
+            >>> result = manager.run("你好，我准备好了")
+        """
+        # 先初始化
+        self.start(user_message)
+
+        # 运行对话直到结束
         try:
             while self._should_continue():
                 self._run_turn()
-            
+
             # 对话结束，生成评估
             evaluation = self._generate_evaluation()
-            
+
             return DialogueResult(
                 success=True,
                 context=self.context,
@@ -182,14 +197,14 @@ class DialogueManager:
                     "duration_seconds": self._get_duration(),
                 }
             )
-        
+
         except Exception as e:
             return DialogueResult(
                 success=False,
                 context=self.context,
                 metadata={"error": str(e)},
             )
-        
+
         finally:
             self._is_running = False
     
