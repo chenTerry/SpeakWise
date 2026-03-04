@@ -7,8 +7,19 @@ AgentScope AI Interview - Core Module
 - DialogueManager: 对话流程管理器
 - Message: 统一消息数据结构
 
-版本：v0.8.0
-新增功能 (v0.8):
+版本：v0.9.0
+新增功能 (v0.9):
+- 企业版功能模块 (Enterprise Features) - 多租户/团队协作/管理员仪表盘/SSO
+- TenantManager: 多租户管理 - 租户创建/升级/暂停/统计
+- TeamManager: 团队管理 - 团队创建/成员管理/角色权限
+- CollaborationManager: 协作会话 - 练习/竞赛/培训会话
+- AdminDashboard: 管理员仪表盘 - CLI 管理界面
+- WebAdminApp: Web 管理后台 - REST API
+- BulkOperations: 批量操作 - CSV/Excel 导入导出
+- ReportGenerator: 企业报表 - 多维度报表生成
+- SSOIntegration: 单点登录 - OAuth2/SAML/LDAP
+
+v0.8 功能:
 - 语音支持模块 (Voice Support) - STT/TTS/语音质量评估/音频处理/语音回放
 - VoiceInput: 语音输入 (STT) - 语音转文字，多语言支持，语音活动检测
 - VoiceOutput: 语音输出 (TTS) - 文字转语音，多语音支持，播放控制
@@ -62,7 +73,7 @@ from .dialogue_manager import (
     DialogueManagerBuilder,
 )
 
-__version__ = "0.8.0"
+__version__ = "0.9.0"
 
 __all__ = [
     # Version
@@ -97,7 +108,32 @@ __all__ = [
 # =============================================================================
 
 def __getattr__(name: str):
-    """延迟导入 v0.2, v0.7 和 v0.8 模块"""
+    """延迟导入 v0.2, v0.7, v0.8 和 v0.9 模块"""
+    # v0.9 Enterprise Module
+    if name == "enterprise":
+        import enterprise
+        return enterprise
+    elif name == "TenantManager":
+        from enterprise import TenantManager
+        return TenantManager
+    elif name == "TeamManager":
+        from enterprise import TeamManager
+        return TeamManager
+    elif name == "CollaborationManager":
+        from enterprise import CollaborationManager
+        return CollaborationManager
+    elif name == "AdminDashboard":
+        from enterprise import AdminDashboard
+        return AdminDashboard
+    elif name == "BulkOperations":
+        from enterprise import BulkOperations
+        return BulkOperations
+    elif name == "ReportGenerator":
+        from enterprise import ReportGenerator
+        return ReportGenerator
+    elif name == "SSOIntegration":
+        from enterprise import SSOIntegration
+        return SSOIntegration
     # v0.8 Voice Module
     if name == "voice":
         import voice
