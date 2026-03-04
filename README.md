@@ -2,13 +2,21 @@
 
 > AI 模拟对话平台 - 基于 AgentScope 框架的多智能体对话模拟系统
 
-**当前版本**: v0.4.0
+**当前版本**: v0.5.0
 
 ## 📋 项目概述
 
 AgentScope AI Interview 是一个专业的 AI 对话模拟训练平台，通过多智能体协作模拟真实职场对话场景，帮助用户提升沟通技能、面试技巧和社交能力。
 
-### ✨ v0.4 新增特性 (User Interface)
+### ✨ v0.5 新增特性 (Multi-Scene Support)
+
+- 🎭 **沙龙场景** - 多角色对话模拟，支持主持人/演讲者/观众/观察者 4 种角色
+- 🏢 **会议场景** - 多种会议类型支持（站会/需求评审/冲突解决/项目启动/复盘会）
+- 🔄 **场景管理器** - 支持场景切换和上下文保持，状态序列化
+- 📊 **场景评估** - 沙龙/会议专用评估器，5 维度评估模型
+- 🎯 **配置驱动** - 灵活的配置系统，支持自定义场景参数
+
+### v0.4 特性 (User Interface)
 
 - 💻 **CLI 命令行界面** - 基于 Rich 库的增强终端 UI，支持 5 种主题
 - 🌐 **Web 网页界面** - 基于 FastAPI 的响应式 Web 应用，支持移动端
@@ -134,6 +142,19 @@ pip install fastapi>=0.104.0 uvicorn[standard]>=0.24.0 jinja2>=3.1.2
 
 ### 运行示例
 
+#### v0.5 多场景演示
+
+```bash
+# 沙龙场景演示
+python examples/salon_demo.py
+
+# 会议场景演示
+python examples/meeting_demo.py
+
+# 场景管理器演示（场景切换）
+python examples/scene_manager_demo.py
+```
+
 #### CLI 模式 (v0.4)
 
 ```bash
@@ -220,6 +241,160 @@ evaluation:
 ```
 
 ## 📚 核心模块
+
+### SceneManager - 场景管理器 (v0.5 新增)
+
+```python
+from scenes.manager import SceneManager
+from core import Message, DialogueContext
+
+# 创建场景管理器
+manager = SceneManager()
+
+# 创建多个场景
+manager.create_scene("interview", scene_key="interview", style="friendly")
+manager.create_scene("salon", scene_key="salon", topic="AI 技术")
+manager.create_scene("meeting", scene_key="meeting", meeting_type="standup")
+
+# 激活场景
+manager.activate_scene("interview")
+
+# 场景切换（保持上下文）
+transition = manager.switch_scene("salon", preserve_context=True)
+print(transition.message)  # "成功切换到 salon 场景"
+
+# 处理对话
+context = manager.get_global_context()
+message = Message(content="你好", role="user")
+response, transition = manager.handle_message(message, context)
+
+# 场景指令（自动切换）
+# 发送 "/switch meeting" 自动切换到会议场景
+
+# 导出/导入状态（支持断点续玩）
+state = manager.export_state()
+manager.import_state(state)
+```
+
+### SalonScene - 沙龙场景 (v0.5 新增)
+
+```python
+from scenes.salon import SalonScene, SalonSceneConfig, SalonPhase
+
+# 创建沙龙配置
+config = SalonSceneConfig(
+    topic="AI 技术在开发中的应用",
+    speaker_topic="大模型辅助编程实践",
+    discussion_style="casual",  # casual/formal/debate
+)
+
+# 创建并初始化场景
+scene = SalonScene(config=config)
+scene.initialize()
+
+# 启动沙龙
+opening = scene.start()
+print(opening.content)
+
+# 处理对话
+from core import Message, DialogueContext
+context = DialogueContext()
+message = Message(content="大家对 AI 编程有什么经验？", role="user")
+response = scene.handle_message(message, context)
+
+# 获取统计
+stats = scene.get_salon_stats()
+print(f"阶段：{stats['phase']}, 轮次：{stats['current_turn']}")
+
+# 沙龙角色（4 种 AI Agent）
+# - SalonHostAgent: 主持人
+# - SalonSpeakerAgent: 演讲者
+# - SalonAudienceAgent: 观众（可多个）
+# - SalonObserverAgent: 观察者
+```
+
+### MeetingScene - 会议场景 (v0.5 新增)
+
+```python
+from scenes.meeting import MeetingScene, MeetingType, MeetingPhase
+
+# 创建会议场景
+scene = MeetingScene(
+    meeting_type=MeetingType.STANDUP,  # 站会
+    project_name="电商平台重构",
+    agenda=["昨日工作", "今日计划", "阻塞问题"],
+)
+scene.initialize()
+
+# 启动会议
+opening = scene.start()
+
+# 会议类型支持:
+# - MeetingType.STANDUP: 每日站会
+# - MeetingType.REQUIREMENT_REVIEW: 需求评审
+# - MeetingType.CONFLICT_RESOLUTION: 冲突解决
+# - MeetingType.PROJECT_KICKOFF: 项目启动
+# - MeetingType.RETROSPECTIVE: 复盘会议
+
+# 获取行动项
+action_items = scene.get_action_items()
+for item in action_items:
+    print(f"- {item['content']} (负责人：{item['owner']})")
+```
+
+### SalonEvaluator - 沙龙评估器 (v0.5 新增)
+
+```python
+from evaluation import SalonEvaluator
+
+# 创建评估器
+evaluator = SalonEvaluator()
+
+# 评估维度:
+# 1. participation_quality (参与质量)
+# 2. topic_relevance (话题相关性)
+# 3. interaction_effectiveness (互动效果)
+# 4. knowledge_contribution (知识贡献)
+# 5. communication_style (沟通风格)
+
+# 执行评估
+result = evaluator.evaluate(
+    dialogue_context=context,
+    scene_stats=stats,
+    user_role="audience",  # host/speaker/audience/observer
+)
+
+# 生成报告
+report = evaluator.generate_report(result, format="markdown")
+print(report)
+```
+
+### MeetingEvaluator - 会议评估器 (v0.5 新增)
+
+```python
+from evaluation import MeetingEvaluator
+
+# 创建评估器
+evaluator = MeetingEvaluator()
+
+# 评估维度:
+# 1. meeting_efficiency (会议效率)
+# 2. communication_effectiveness (沟通效果)
+# 3. collaboration_quality (协作质量)
+# 4. problem_solving (问题解决)
+# 5. action_orientation (行动导向)
+
+# 执行评估（权重根据会议类型自动调整）
+result = evaluator.evaluate(
+    dialogue_context=context,
+    meeting_stats=stats,
+    meeting_type="standup",  # 不同会议类型权重不同
+    user_role="participant",
+)
+
+# 行动项质量评估
+print(f"行动项质量：{result.action_items_quality}")
+```
 
 ### Config - 配置系统
 
@@ -461,7 +636,42 @@ questions:
 | v0.2 | ✅ 完成 | 2024-03 | 面试场景系统、增强面试官、问题库、评估系统 |
 | v0.3 | 📅 计划 | 2024-06 | 智能反馈系统、AgentScope 深度集成 |
 | v0.4 | ✅ 完成 | 2024-03 | CLI 和 Web 用户界面 |
+| v0.5 | ✅ 完成 | 2024-03 | 多场景支持（沙龙/会议）、场景管理器 |
 | v1.0 | 📅 计划 | 2024-05 | 正式发布、完整功能 |
+
+### v0.5 完成内容
+
+- [x] TASK-025: 沙龙场景结构
+  - `scenes/salon/scene.py` - SalonScene, SalonSceneConfig
+  - `scenes/salon/roles.py` - SalonRoleType, RoleConfig, RoleManager
+  - 支持 4+ AI Agent 同时参与
+- [x] TASK-026: 沙龙场景 Agent
+  - `scenes/salon/host.py` - SalonHostAgent (主持人)
+  - `scenes/salon/speaker.py` - SalonSpeakerAgent (演讲者)
+  - `scenes/salon/audience.py` - SalonAudienceAgent (观众)
+  - `scenes/salon/observer.py` - SalonObserverAgent (观察者)
+- [x] TASK-027: 会议场景结构
+  - `scenes/meeting/scene.py` - MeetingScene, MeetingSceneConfig
+  - `scenes/meeting/__init__.py` - MeetingType, MeetingPhase
+  - 支持 5 种会议子场景
+- [x] TASK-028: 会议场景 Agent
+  - `scenes/meeting/manager.py` - MeetingManagerAgent (主持人)
+  - `scenes/meeting/participant.py` - MeetingParticipantAgent (参与者)
+  - 支持多种角色（产品经理/开发/测试/项目经理等）
+- [x] TASK-029: 场景切换机制
+  - `scenes/manager.py` - SceneManager, SceneTransition
+  - 上下文保持和恢复
+  - 场景状态序列化/反序列化
+  - 场景指令支持（/switch, /scene）
+- [x] TASK-030: 场景评估扩展
+  - `evaluation/salon_evaluator.py` - SalonEvaluator (5 维度)
+  - `evaluation/meeting_evaluator.py` - MeetingEvaluator (5 维度)
+  - 会议类型权重自适应
+- [x] TASK-DOC: 示例和文档
+  - `examples/salon_demo.py` - 沙龙场景演示
+  - `examples/meeting_demo.py` - 会议场景演示
+  - `examples/scene_manager_demo.py` - 场景管理器演示
+  - 更新 README 和模块文档
 
 ### v0.4 完成内容
 
@@ -548,6 +758,8 @@ MIT License
 - 开发团队：Development Team
 
 ---
+
+**v0.5 说明**: 本版本完成了多场景支持功能，包括沙龙场景（4 种角色 AI Agent）、会议场景（5 种会议类型）、场景管理器（支持场景切换和上下文保持）、场景专用评估器。运行 `python examples/salon_demo.py`、`python examples/meeting_demo.py` 或 `python examples/scene_manager_demo.py` 体验完整功能。
 
 **v0.4 说明**: 本版本完成了完整的用户界面实现，包括 CLI 命令行界面和 Web 网页界面。CLI 模式提供丰富的终端交互体验，支持 5 种主题；Web 模式提供响应式界面，支持移动端访问。运行 `python examples/cli_demo.py` 或 `python examples/web_demo.py` 体验完整功能。
 
