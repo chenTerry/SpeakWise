@@ -7,8 +7,17 @@ AgentScope AI Interview - Core Module
 - DialogueManager: 对话流程管理器
 - Message: 统一消息数据结构
 
-版本：v0.7.0
-新增功能 (v0.7):
+版本：v0.8.0
+新增功能 (v0.8):
+- 语音支持模块 (Voice Support) - STT/TTS/语音质量评估/音频处理/语音回放
+- VoiceInput: 语音输入 (STT) - 语音转文字，多语言支持，语音活动检测
+- VoiceOutput: 语音输出 (TTS) - 文字转语音，多语音支持，播放控制
+- VoiceQualityAssessor: 语音质量评估 - 发音/语速/填充词检测
+- AudioProcessor: 音频处理 - 格式转换/降噪/音量标准化
+- VoiceReplay: 语音回放 - 会话录制/回放/分段导航/速度控制
+- VoiceSettings: 语音设置 - CLI/Web 设置界面，配置管理
+
+v0.7 功能:
 - 数据分析模块 (Analytics) - 学习分析、行为追踪、推荐引擎
 - 统计引擎 (Statistics) - 高级统计、百分位数、分布分析
 - 洞察仪表盘 (Insights) - 关键洞察、成就系统
@@ -53,7 +62,7 @@ from .dialogue_manager import (
     DialogueManagerBuilder,
 )
 
-__version__ = "0.7.0"
+__version__ = "0.8.0"
 
 __all__ = [
     # Version
@@ -88,9 +97,31 @@ __all__ = [
 # =============================================================================
 
 def __getattr__(name: str):
-    """延迟导入 v0.2 和 v0.7 模块"""
+    """延迟导入 v0.2, v0.7 和 v0.8 模块"""
+    # v0.8 Voice Module
+    if name == "voice":
+        import voice
+        return voice
+    elif name == "VoiceInput":
+        from voice import VoiceInput
+        return VoiceInput
+    elif name == "VoiceOutput":
+        from voice import VoiceOutput
+        return VoiceOutput
+    elif name == "VoiceQualityAssessor":
+        from voice import VoiceQualityAssessor
+        return VoiceQualityAssessor
+    elif name == "AudioProcessor":
+        from voice import AudioProcessor
+        return AudioProcessor
+    elif name == "VoiceReplay":
+        from voice import VoiceReplay
+        return VoiceReplay
+    elif name == "VoiceSettingsManager":
+        from voice import VoiceSettingsManager
+        return VoiceSettingsManager
     # v0.7 Analytics Module
-    if name == "analytics":
+    elif name == "analytics":
         import analytics
         return analytics
     elif name == "LearningAnalytics":

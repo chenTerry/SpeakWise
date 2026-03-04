@@ -90,6 +90,32 @@ openpyxl>=3.1.0
 # alembic>=1.12.0
 
 # =============================================================================
+# Voice Support (v0.8)
+# =============================================================================
+
+# Speech Recognition - Speech-to-Text (STT)
+speechrecognition>=3.10.0
+
+# PyAudio - Audio I/O (microphone input, playback)
+# Note: May require system dependencies (portaudio)
+pyaudio>=0.2.13
+
+# pyttsx3 - Offline Text-to-Speech (system voices)
+pyttsx3>=2.90
+
+# gTTS - Google Text-to-Speech (online)
+gTTS>=2.4.0
+
+# pydub - Audio processing and manipulation
+pydub>=0.25.0
+
+# webrtcvad - Voice Activity Detection (VAD)
+webrtcvad>=2.0.10
+
+# noisereduce - Noise reduction (optional, for advanced processing)
+noisereduce>=3.0.0
+
+# =============================================================================
 # Development Dependencies (optional)
 # =============================================================================
 
