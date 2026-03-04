@@ -7,8 +7,15 @@ AgentScope AI Interview - Core Module
 - DialogueManager: 对话流程管理器
 - Message: 统一消息数据结构
 
-版本：v0.5
+版本：v0.6.0
 新增功能:
+- 用户系统 (Users) - 用户管理、认证
+- 进度追踪 (Progress) - 学习进度、指标统计
+- 数据可视化 (Visualization) - 雷达图、趋势图
+- 历史回放 (History) - 会话回放、笔记
+- 用户仪表盘 (Dashboard) - CLI/Web 仪表盘
+
+v0.5 功能:
 - 多场景支持 (沙龙、会议)
 - 场景管理器 (SceneManager)
 - 场景专用评估器
@@ -40,7 +47,7 @@ from .dialogue_manager import (
     DialogueManagerBuilder,
 )
 
-__version__ = "0.5.0"
+__version__ = "0.6.0"
 
 __all__ = [
     # Version
