@@ -7,11 +7,13 @@ AgentScope AI Interview - Core Module
 - DialogueManager: 对话流程管理器
 - Message: 统一消息数据结构
 
-版本：v0.2
+版本：v0.4
 新增功能:
 - 场景系统 (Scenes)
 - 增强面试官 Agent
 - 三维度评估系统
+- CLI 界面 (Rich)
+- Web 界面 (FastAPI)
 """
 
 from .config import Config, ConfigLoader, ConfigError
@@ -32,7 +34,7 @@ from .dialogue_manager import (
     DialogueManagerBuilder,
 )
 
-__version__ = "0.2.0"
+__version__ = "0.4.0"
 
 __all__ = [
     # Version
