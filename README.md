@@ -2,13 +2,22 @@
 
 > AI 模拟对话平台 - 基于 AgentScope 框架的多智能体对话模拟系统
 
-**当前版本**: v0.7.0
+**当前版本**: v0.8.0
 
 ## 📋 项目概述
 
 AgentScope AI Interview 是一个专业的 AI 对话模拟训练平台，通过多智能体协作模拟真实职场对话场景，帮助用户提升沟通技能、面试技巧和社交能力。
 
-### ✨ v0.7 新增特性 (Data Tracking & Insights)
+### ✨ v0.8 新增特性 (Voice Support)
+
+- 🎤 **语音输入 (STT)** - 语音转文字，支持中英文，语音活动检测 (VAD)
+- 🔊 **语音输出 (TTS)** - 文字转语音，多语音选择，播放控制
+- 📊 **语音质量评估** - 发音清晰度、语速节奏、填充词检测、改进建议
+- 🔧 **音频处理** - 格式转换、降噪处理、音量标准化、音频分割拼接
+- ⏯️  **语音回放** - 会话录制回放、分段导航、速度控制 (0.5x-2.0x)
+- ⚙️  **语音设置** - CLI/Web 设置界面、配置管理、语音配置文件
+
+### v0.7 特性 (Data Tracking & Insights)
 
 - 📊 **学习分析系统** - 学习模式识别、强弱项分析、技能水平评估
 - 🔍 **行为追踪** - 会话频率追踪、改进模式监控、平台期检测
@@ -287,6 +296,240 @@ evaluation:
 ```
 
 ## 📚 核心模块
+
+### Voice Module - 语音支持模块 (v0.8 新增)
+
+#### VoiceInput - 语音输入 (STT)
+
+```python
+from voice import VoiceInput, VoiceInputConfig, Language, STTEngine
+
+# 创建配置
+config = VoiceInputConfig(
+    language=Language.CHINESE,
+    engine=STTEngine.GOOGLE,
+    sample_rate=16000,
+    vad_aggressiveness=2,
+    enable_fallback=True
+)
+
+# 创建语音输入
+voice_input = VoiceInput(config)
+
+# 从文件识别
+result = voice_input.recognize("audio.wav")
+print(f"识别文本：{result.text}")
+print(f"置信度：{result.confidence:.2f}")
+
+# 语音活动检测
+has_speech = voice_input.detect_speech(audio_data)
+
+# 支持的语言
+languages = voice_input.get_supported_languages()
+# [zh-CN, en-US, zh-HK, en-GB]
+```
+
+#### VoiceOutput - 语音输出 (TTS)
+
+```python
+from voice import VoiceOutput, VoiceOutputConfig, TTSEngine
+
+# 创建配置
+config = VoiceOutputConfig(
+    engine=TTSEngine.PYTTSX3,
+    language="zh-CN",
+    rate=200,
+    volume=1.0,
+    auto_play=True
+)
+
+# 创建语音输出
+voice_output = VoiceOutput(config)
+
+# 文字转语音
+result = voice_output.speak("你好，欢迎使用语音支持模块")
+print(f"合成成功：{result.success}")
+
+# 保存到文件
+voice_output.save_to_file("这是测试文本", "output.wav")
+
+# 获取可用语音
+voices = voice_output.get_voices()
+for voice in voices:
+    print(f"{voice.name} ({voice.language}, {voice.gender.value})")
+
+# 设置语音
+voice_output.set_voice("voice_id")
+voice_output.set_rate(250)  # 设置语速
+voice_output.set_volume(0.8)  # 设置音量
+```
+
+#### VoiceQualityAssessor - 语音质量评估
+
+```python
+from voice import VoiceQualityAssessor
+
+# 创建评估器
+assessor = VoiceQualityAssessor(language="zh-CN")
+
+# 评估语音质量
+report = assessor.assess(
+    text="你好，我是来面试的。",
+    duration=3.0
+)
+
+# 总体评分
+print(f"总体评分：{report.overall_score:.1f}/100")
+print(f"质量等级：{report.quality_level.value.upper()}")
+
+# 详细评分
+print(f"发音：{report.pronunciation.overall:.1f}/100")
+print(f"语速：{report.pace.wpm:.1f} WPM ({report.pace.level.value})")
+print(f"填充词：{report.fillers.total_count}个")
+print(f"节奏：{report.rhythm.flow:.1f}/100")
+
+# 改进建议
+for suggestion in report.suggestions:
+    print(f"- {suggestion}")
+
+# 优势
+for strength in report.strengths:
+    print(f"✨ {strength}")
+```
+
+#### AudioProcessor - 音频处理
+
+```python
+from voice import AudioProcessor, AudioFormat, NoiseReductionLevel
+
+# 创建处理器
+processor = AudioProcessor()
+
+# 获取音频信息
+info = processor.get_audio_info("input.wav")
+print(f"格式：{info.format.value}")
+print(f"时长：{info.duration:.2f}s")
+print(f"采样率：{info.sample_rate} Hz")
+
+# 格式转换
+from voice import ConversionConfig
+config = ConversionConfig(
+    target_format=AudioFormat.MP3,
+    sample_rate=44100,
+    bitrate=128
+)
+result = processor.convert("input.wav", config)
+
+# 降噪处理
+from voice import NoiseReductionConfig
+nr_config = NoiseReductionConfig(level=NoiseReductionLevel.MODERATE)
+result = processor.reduce_noise("input.wav", nr_config)
+
+# 音量标准化
+result = processor.normalize_volume("input.wav")
+
+# 改变速度
+result = processor.change_speed("input.wav", speed_factor=1.5)
+
+# 裁剪音频
+result = processor.trim("input.wav", start=0.0, end=5.0)
+
+# 分割静音
+segments = processor.split_silence("input.wav")
+```
+
+#### VoiceReplay - 语音回放
+
+```python
+from voice import VoiceReplay, ReplayMode
+
+# 创建回放
+replay = VoiceReplay()
+
+# 开始会话
+session_id = replay.start_session("面试模拟 Session 1")
+
+# 添加片段
+replay.add_segment(speaker="user", text="你好，我是来面试的。")
+replay.add_segment(speaker="agent", text="你好，欢迎参加今天的面试。")
+
+# 结束会话
+replay.end_session()
+
+# 播放
+replay.play()
+
+# 播放控制
+replay.pause()
+replay.resume()
+replay.stop()
+
+# 导航
+replay.next_segment()
+replay.previous_segment()
+replay.jump_to(2)  # 跳转到第 3 个片段
+replay.jump_to_time(30.0)  # 跳转到 30 秒位置
+
+# 速度控制
+replay.set_speed(1.5)  # 1.5 倍速
+replay.increase_speed()
+replay.decrease_speed()
+
+# 设置模式
+replay.set_mode(ReplayMode.LOOP)
+
+# 生成文字记录
+transcript = replay.generate_transcript(session_id)
+print(transcript)
+
+# 添加笔记
+replay.add_note(segment_index=0, note="这里表现很好")
+notes = replay.get_notes()
+```
+
+#### VoiceSettings - 语音设置管理
+
+```python
+from voice import VoiceSettingsManager, CLIVoiceSettingsPanel
+
+# 创建设置管理器
+manager = VoiceSettingsManager()
+
+# 获取设置
+settings = manager.get_settings()
+print(f"语音输入：{'启用' if settings.enable_voice_input else '禁用'}")
+
+# 获取活动配置
+profile = manager.get_active_profile()
+print(f"配置名称：{profile.name}")
+print(f"输入语言：{profile.input_language}")
+print(f"播放速度：{profile.default_speed}x")
+
+# 创建新配置
+new_profile = manager.create_profile("面试练习配置")
+
+# 更新配置
+manager.update_profile(new_profile.id, {
+    "input_language": "en-US",
+    "default_speed": 1.2
+})
+
+# 切换配置
+manager.switch_profile(new_profile.id)
+
+# 列出所有配置
+profiles = manager.list_profiles()
+for p in profiles:
+    print(f"- {p['name']}")
+
+# 导出/导入设置
+manager.export_settings("voice_settings.json")
+manager.import_settings("voice_settings.json")
+
+# CLI 设置面板
+panel = CLIVoiceSettingsPanel(manager)
+panel.interactive_menu()
+```
 
 ### Analytics Module - 数据分析模块 (v0.7 新增)
 
@@ -903,7 +1146,52 @@ questions:
 | v0.5 | ✅ 完成 | 2024-03 | 多场景支持（沙龙/会议）、场景管理器 |
 | v0.6 | ✅ 完成 | 2024-03 | 用户系统、进度追踪、数据可视化 |
 | v0.7 | ✅ 完成 | 2024-03 | 数据追踪与洞察、学习分析、推荐引擎 |
+| v0.8 | ✅ 完成 | 2024-03 | 语音支持模块 (STT/TTS/质量评估/音频处理/回放) |
 | v1.0 | 📅 计划 | 2024-05 | 正式发布、完整功能 |
+
+### v0.8 完成内容
+
+- [x] TASK-043: 语音输入系统
+  - `voice/input.py` - VoiceInput, VoiceInputConfig
+  - 语音转文字 (STT) - Google Speech API, 支持多语言
+  - 语音活动检测 (VAD) - WebRTC VAD
+  - 降级机制 - 多引擎支持 (Google/Builtin/Mock)
+- [x] TASK-044: 语音输出系统
+  - `voice/output.py` - VoiceOutput, VoiceOutputConfig
+  - 文字转语音 (TTS) - pyttsx3 (离线), gTTS (在线)
+  - 语音选择 - 多语音支持，语速/音量/音调控制
+  - 音频播放 - 实时播放控制
+- [x] TASK-045: 语音质量评估
+  - `voice/quality.py` - VoiceQualityAssessor, VoiceQualityReport
+  - 发音评估 - 清晰度/准确性/完整性
+  - 语速分析 - WPM/一致性/停顿检测
+  - 填充词检测 - 中英文填充词识别，分类统计
+  - 节奏分析 - 规律性/语调变化/流畅度
+  - 改进建议 - 个性化建议生成
+- [x] TASK-046: 音频处理模块
+  - `voice/processor.py` - AudioProcessor
+  - 格式转换 - WAV/MP3/FLAC/OGG/M4A
+  - 降噪处理 - WebRTC VAD, noisereduce 库
+  - 音量标准化 - RMS/峰值标准化
+  - 音频编辑 - 裁剪/拼接/变速/分割
+- [x] TASK-047: 语音回放
+  - `voice/replay.py` - VoiceReplay, ReplaySession
+  - 会话录制 - 分段录制，元数据标记
+  - 回放控制 - 播放/暂停/停止
+  - 分段导航 - 上一段/下一段/跳转
+  - 速度控制 - 0.5x-2.0x 无级变速
+  - 笔记功能 - 片段笔记标注
+- [x] TASK-048: 语音设置
+  - `voice/settings.py` - VoiceSettingsManager, VoiceProfile
+  - 配置管理 - 配置文件创建/更新/删除/切换
+  - CLI 设置面板 - Rich 交互式界面
+  - Web 设置接口 - FastAPI RESTful API
+  - 导入导出 - JSON 格式设置备份
+- [x] TASK-DOC: 示例和文档
+  - `examples/voice_demo.py` - 完整功能演示
+  - `voice/__init__.py` - 模块导出
+  - 更新 README 和 core/__init__.py
+  - 更新 requirements.txt (speechrecognition, pyttsx3, gTTS, pydub, webrtcvad)
 
 ### v0.7 完成内容
 
