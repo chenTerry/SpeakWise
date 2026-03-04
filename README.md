@@ -2,13 +2,22 @@
 
 > AI 模拟对话平台 - 基于 AgentScope 框架的多智能体对话模拟系统
 
-**当前版本**: v0.5.0
+**当前版本**: v0.6.0
 
 ## 📋 项目概述
 
 AgentScope AI Interview 是一个专业的 AI 对话模拟训练平台，通过多智能体协作模拟真实职场对话场景，帮助用户提升沟通技能、面试技巧和社交能力。
 
-### ✨ v0.5 新增特性 (Multi-Scene Support)
+### ✨ v0.6 新增特性 (User System & Progress Tracking)
+
+- 👤 **用户系统** - 完整的用户管理、认证系统（JWT + Session）
+- 📊 **进度追踪** - 学习进度跟踪、七维度评估、改进率计算
+- 📈 **数据可视化** - 雷达图、趋势图（ASCII/SVG 双格式）
+- 📼 **历史回放** - 会话回放、步骤导航、笔记标注
+- 🖥️ **用户仪表盘** - CLI/Web 双界面仪表盘、进度报告导出
+- 💾 **SQLite 数据库** - 用户数据、会话记录、进度数据存储
+
+### v0.5 特性 (Multi-Scene Support)
 
 - 🎭 **沙龙场景** - 多角色对话模拟，支持主持人/演讲者/观众/观察者 4 种角色
 - 🏢 **会议场景** - 多种会议类型支持（站会/需求评审/冲突解决/项目启动/复盘会）
@@ -141,6 +150,19 @@ pip install fastapi>=0.104.0 uvicorn[standard]>=0.24.0 jinja2>=3.1.2
 ```
 
 ### 运行示例
+
+#### v0.6 用户系统演示
+
+```bash
+# 用户系统完整演示（包含所有 v0.6 功能）
+python examples/user_system_demo.py
+
+# 生成的文件:
+# - data/demo_users.db (SQLite 数据库)
+# - examples/radar_chart.svg (雷达图)
+# - examples/session_replay.md (会话回放)
+# - examples/progress_report.md (进度报告)
+```
 
 #### v0.5 多场景演示
 
@@ -637,7 +659,39 @@ questions:
 | v0.3 | 📅 计划 | 2024-06 | 智能反馈系统、AgentScope 深度集成 |
 | v0.4 | ✅ 完成 | 2024-03 | CLI 和 Web 用户界面 |
 | v0.5 | ✅ 完成 | 2024-03 | 多场景支持（沙龙/会议）、场景管理器 |
+| v0.6 | ✅ 完成 | 2024-03 | 用户系统、进度追踪、数据可视化 |
 | v1.0 | 📅 计划 | 2024-05 | 正式发布、完整功能 |
+
+### v0.6 完成内容
+
+- [x] TASK-031: 用户系统架构设计
+  - `users/models.py` - User, UserProfile, SessionModel (Pydantic)
+  - `users/auth.py` - AuthService (JWT), SessionManager
+  - `users/service.py` - UserService 业务逻辑层
+- [x] TASK-032: 用户数据库实现
+  - `users/database.py` - Database 单例，SQLite 连接管理
+  - `users/tables.py` - SQLAlchemy 表定义 (users, sessions, progress_data)
+  - `users/repository.py` - UserRepository, SessionRepository, ProgressRepository
+- [x] TASK-033: 进度追踪器
+  - `progress/tracker.py` - ProgressTracker 核心类
+  - `progress/metrics.py` - ProgressMetricsCalculator, 七维度评估
+  - `progress/history.py` - SessionHistoryManager
+- [x] TASK-034: 数据可视化
+  - `visualization/charts.py` - ASCIIChart, ChartGenerator
+  - `visualization/radar.py` - RadarChart, DimensionRadarChart (SVG)
+  - `visualization/trends.py` - TrendChart, ProgressTrendChart
+- [x] TASK-035: 历史回放
+  - `history/replay.py` - SessionReplay, ReplayStep, ReplayNote
+  - 步骤导航（上一步/下一步/跳转）
+  - 笔记标注和导出（JSON/Markdown）
+- [x] TASK-036: 用户仪表盘
+  - `dashboard/cli_dashboard.py` - CLIDashboard (Rich UI)
+  - `dashboard/web_dashboard.py` - WebDashboardRouter (FastAPI)
+  - `dashboard/report.py` - ReportGenerator (Markdown/PDF/HTML)
+- [x] TASK-DOC: 示例和文档
+  - `examples/user_system_demo.py` - 完整功能演示
+  - 更新 README 和 core/__init__.py
+  - 更新 requirements.txt (sqlalchemy, PyJWT, matplotlib)
 
 ### v0.5 完成内容
 
@@ -758,6 +812,8 @@ MIT License
 - 开发团队：Development Team
 
 ---
+
+**v0.6 说明**: 本版本完成了用户系统与进度追踪功能，包括用户管理、认证系统、进度追踪、数据可视化（雷达图/趋势图）、历史回放和用户仪表盘。运行 `python examples/user_system_demo.py` 体验完整功能。
 
 **v0.5 说明**: 本版本完成了多场景支持功能，包括沙龙场景（4 种角色 AI Agent）、会议场景（5 种会议类型）、场景管理器（支持场景切换和上下文保持）、场景专用评估器。运行 `python examples/salon_demo.py`、`python examples/meeting_demo.py` 或 `python examples/scene_manager_demo.py` 体验完整功能。
 
