@@ -1,7 +1,7 @@
 """
-Evaluation Module - 评估模块 (v0.3)
+Evaluation Module - 评估模块 (v0.5)
 
-提供面试评估功能，包括：
+提供多场景评估功能，包括：
 
 v0.2 (基础评估):
 - BasicEvaluator: 三维度评估器
@@ -15,6 +15,10 @@ v0.3 (高级评估 - 智能反馈系统):
 - EvaluationStorage: SQLite 持久化存储
 - FeedbackReportGenerator: 多格式报告生成器
 
+v0.5 (场景评估扩展):
+- SalonEvaluator: 沙龙场景评估器
+- MeetingEvaluator: 会议场景评估器
+
 评估维度 (v0.3 - 7 维度):
 1. content_quality (内容质量): 相关性、准确性、深度
 2. expression_clarity (表达清晰度): 逻辑性、简洁性、条理性
@@ -24,22 +28,34 @@ v0.3 (高级评估 - 智能反馈系统):
 6. confidence_level (自信程度): 语气、确定性、自我展示
 7. innovative_thinking (创新思维): 独特见解、创造性解决方案
 
+沙龙评估维度 (v0.5):
+1. participation_quality (参与质量)
+2. topic_relevance (话题相关性)
+3. interaction_effectiveness (互动效果)
+4. knowledge_contribution (知识贡献)
+5. communication_style (沟通风格)
+
+会议评估维度 (v0.5):
+1. meeting_efficiency (会议效率)
+2. communication_effectiveness (沟通效果)
+3. collaboration_quality (协作质量)
+4. problem_solving (问题解决)
+5. action_orientation (行动导向)
+
 使用示例:
-    >>> from evaluation import AdvancedEvaluator, EvaluationStorage, FeedbackReportGenerator
-    >>> 
-    >>> # 创建评估器
+    >>> from evaluation import AdvancedEvaluator, SalonEvaluator, MeetingEvaluator
+    >>>
+    >>> # 通用评估
     >>> evaluator = AdvancedEvaluator(model_agent=model_agent)
-    >>> 
-    >>> # 评估对话
     >>> result = evaluator.evaluate(dialogue_history)
-    >>> 
-    >>> # 保存结果
-    >>> storage = EvaluationStorage()
-    >>> storage.save_evaluation(result, session_id="xxx")
-    >>> 
-    >>> # 生成报告
-    >>> report_gen = FeedbackReportGenerator()
-    >>> report = report_gen.generate(result, format="markdown")
+    >>>
+    >>> # 沙龙评估
+    >>> salon_eval = SalonEvaluator()
+    >>> salon_result = salon_eval.evaluate(context, stats)
+    >>>
+    >>> # 会议评估
+    >>> meeting_eval = MeetingEvaluator()
+    >>> meeting_result = meeting_eval.evaluate(context, stats, meeting_type="standup")
 """
 
 # v0.2 - Basic Evaluator (保持向后兼容)
@@ -73,6 +89,21 @@ from .report import (
     ReportTemplate,
 )
 
+# v0.5 - Scene-specific Evaluators
+from .salon_evaluator import (
+    SalonEvaluator,
+    SalonEvaluationResult,
+    SalonEvaluationDimension,
+    SalonDimensionScore,
+)
+
+from .meeting_evaluator import (
+    MeetingEvaluator,
+    MeetingEvaluationResult,
+    MeetingEvaluationDimension,
+    MeetingDimensionScore,
+)
+
 # 导出所有内容
 __all__ = [
     # v0.2 - Basic
@@ -94,10 +125,19 @@ __all__ = [
     # v0.3 - Report
     "FeedbackReportGenerator",
     "ReportTemplate",
+    # v0.5 - Scene-specific
+    "SalonEvaluator",
+    "SalonEvaluationResult",
+    "SalonEvaluationDimension",
+    "SalonDimensionScore",
+    "MeetingEvaluator",
+    "MeetingEvaluationResult",
+    "MeetingEvaluationDimension",
+    "MeetingDimensionScore",
 ]
 
 # 版本信息
-__version__ = "0.3.0"
+__version__ = "0.5.0"
 __author__ = "AgentScope AI Interview Team"
 
 
