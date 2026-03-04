@@ -2,13 +2,23 @@
 
 > AI 模拟对话平台 - 基于 AgentScope 框架的多智能体对话模拟系统
 
-**当前版本**: v0.6.0
+**当前版本**: v0.7.0
 
 ## 📋 项目概述
 
 AgentScope AI Interview 是一个专业的 AI 对话模拟训练平台，通过多智能体协作模拟真实职场对话场景，帮助用户提升沟通技能、面试技巧和社交能力。
 
-### ✨ v0.6 新增特性 (User System & Progress Tracking)
+### ✨ v0.7 新增特性 (Data Tracking & Insights)
+
+- 📊 **学习分析系统** - 学习模式识别、强弱项分析、技能水平评估
+- 🔍 **行为追踪** - 会话频率追踪、改进模式监控、平台期检测
+- 🎯 **推荐引擎** - 个性化主题推荐、难度推荐、学习路径生成
+- 📈 **统计引擎** - 高级统计指标、百分位数分析、用户对比（匿名化）
+- 💡 **洞察仪表盘** - 关键洞察展示、趋势分析、成就系统
+- 📤 **数据导出** - PDF/Excel/JSON 多格式导出、数据备份与恢复
+- 🔒 **隐私保护** - 匿名化对比数据、配置驱动的隐私设置
+
+### v0.6 特性 (User System & Progress Tracking)
 
 - 👤 **用户系统** - 完整的用户管理、认证系统（JWT + Session）
 - 📊 **进度追踪** - 学习进度跟踪、七维度评估、改进率计算
@@ -151,7 +161,21 @@ pip install fastapi>=0.104.0 uvicorn[standard]>=0.24.0 jinja2>=3.1.2
 
 ### 运行示例
 
-#### v0.6 用户系统演示
+#### v0.7 数据分析演示
+
+```bash
+# 数据分析完整演示（包含所有 v0.7 功能）
+python examples/analytics_demo.py
+
+# 生成的文件:
+# - exports/analytics_report_demo_user_001.json (JSON 报告)
+# - exports/analytics_report_demo_user_001.xlsx (Excel 报告)
+# - exports/analytics_report_demo_user_001.pdf (PDF 报告)
+# - exports/sessions_demo_user_001.csv (会话数据)
+# - exports/backup_demo_user_001.json (数据备份)
+```
+
+#### v0.7 核心功能使用
 
 ```bash
 # 用户系统完整演示（包含所有 v0.6 功能）
@@ -263,6 +287,224 @@ evaluation:
 ```
 
 ## 📚 核心模块
+
+### Analytics Module - 数据分析模块 (v0.7 新增)
+
+#### LearningAnalytics - 学习分析器
+
+```python
+from analytics import LearningAnalytics
+
+# 创建学习分析器
+analytics = LearningAnalytics()
+
+# 生成学习画像
+profile = analytics.generate_learning_profile(user_id, sessions)
+
+print(f"技能水平：{profile.skill_level.value}")  # beginner/intermediate/advanced/expert
+print(f"学习模式：{profile.learning_pattern.value}")  # consistent/burst/gradual/irregular/declining
+
+# 分析优势
+for strength in profile.strengths:
+    print(f"优势：{strength.dimension} - {strength.score:.1f}分")
+
+# 分析弱点
+for weakness in profile.weaknesses:
+    print(f"弱点：{weakness.dimension} - {weakness.score:.1f}分 (优先级：{weakness.priority})")
+    for suggestion in weakness.improvement_suggestions:
+        print(f"  建议：{suggestion}")
+
+# 生成洞察
+for insight in profile.insights:
+    print(f"[{insight.insight_type}] {insight.title}: {insight.description}")
+```
+
+#### BehaviorTracker - 行为追踪器
+
+```python
+from analytics import BehaviorTracker
+
+# 创建行为追踪器
+tracker = BehaviorTracker()
+
+# 分析用户行为
+report = tracker.analyze_behavior(user_id, sessions, period_days=30)
+
+# 会话模式
+sp = report.session_pattern
+print(f"平均每周会话数：{sp.avg_sessions_per_week:.2f}")
+print(f"偏好时间：{sp.preferred_time_of_day}")  # morning/afternoon/evening/night
+print(f"一致性分数：{sp.consistency_score:.2f}")  # 0-1
+
+# 参与度
+eng = report.engagement
+print(f"参与度等级：{eng.level.value}")  # inactive/low/medium/high/very_high
+print(f"当前连续天数：{eng.current_streak}")
+print(f"最长连续天数：{eng.longest_streak}")
+
+# 改进模式
+imp = report.improvement_pattern
+print(f"改进趋势：{imp.overall_trend}")  # improving/stable/declining
+print(f"改进率：{imp.improvement_rate:.2f}%/周")
+
+# 平台期检测
+plat = report.plateau_analysis
+print(f"平台期状态：{plat.status.value}")  # none/approaching/in_plateau/breaking_through
+if plat.status.value == "in_plateau":
+    print(f"平台期持续天数：{plat.duration_days}")
+    for rec in plat.recommendations:
+        print(f"  建议：{rec}")
+```
+
+#### RecommendationEngine - 推荐引擎
+
+```python
+from analytics import RecommendationEngine
+
+# 创建推荐引擎
+engine = RecommendationEngine()
+
+# 生成推荐
+report = engine.generate_recommendations(user_id, sessions, learning_profile, behavior_report)
+
+# 主题推荐
+for rec in report.topic_recommendations:
+    print(f"[P{rec.priority}] {rec.topic_name}")
+    print(f"  维度：{rec.dimension}")
+    print(f"  难度：{rec.difficulty.value}")
+    print(f"  预期提升：{rec.expected_improvement:.1f}%")
+
+# 难度推荐
+dr = report.difficulty_recommendation
+print(f"当前难度：{dr.current_level.value}")
+print(f"推荐难度：{dr.recommended_level.value}")
+print(f"原因：{dr.reason}")
+
+# 学习路径
+lp = report.learning_path
+print(f"学习路径：{lp.duration_days}天")
+for item in lp.items[:5]:
+    print(f"  第{item.step}步：{item.description}")
+
+# 练习方法
+for method in report.practice_methods:
+    print(f"{method.method_name}: {method.description}")
+    for step in method.steps[:3]:
+        print(f"  - {step}")
+```
+
+#### StatisticsEngine - 统计引擎
+
+```python
+from analytics import StatisticsEngine
+
+# 创建统计引擎
+engine = StatisticsEngine()
+
+# 生成统计报告
+report = engine.generate_statistical_report(user_id, sessions, period_days=30)
+
+# 描述性统计
+ds = report.descriptive_stats
+print(f"平均分：{ds.mean:.2f}")
+print(f"中位数：{ds.median:.2f}")
+print(f"标准差：{ds.std_dev:.2f}")
+
+# 百分位数据
+pd = report.percentile_data
+print(f"P50: {pd.p50:.2f}, P75: {pd.p75:.2f}, P90: {pd.p90:.2f}")
+
+# 分布分析
+da = report.distribution_analysis
+print(f"分布类型：{da.type.value}")  # normal/skewed_left/skewed_right/uniform/bimodal
+print(f"偏度：{da.skewness:.3f}")
+print(f"异常值：{da.outliers_count}个")
+
+# 对比分析（匿名化）
+ca = report.comparative_analysis
+print(f"百分位排名：{ca.percentile_rank:.1f}%")
+print(f"Z 分数：{ca.z_score:.2f}")
+print(f"性能水平：{ca.performance_level}")  # excellent/good/average/below_average/poor
+print(f"{ca.comparison_summary}")
+
+# 趋势统计
+ts = report.trend_statistics
+print(f"趋势方向：{ts.trend_direction}")  # upward/downward/stable
+print(f"趋势强度：{ts.trend_strength}")  # strong/moderate/weak
+print(f"预测值：{ts.predicted_next_value:.2f}")
+```
+
+#### InsightsDashboard - 洞察仪表盘
+
+```python
+from analytics import InsightsDashboard
+
+# 创建仪表盘
+dashboard = InsightsDashboard()
+
+# 生成仪表盘数据
+data = dashboard.generate_dashboard(
+    user_id, sessions, learning_profile, behavior_report,
+    statistical_report, recommendation_report
+)
+
+# 关键洞察
+for insight in data.key_insights[:5]:
+    print(f"{insight.icon} [{insight.category.value}] {insight.title}")
+    print(f"  {insight.description}")
+    if insight.actionable_items:
+        print(f"  行动：{insight.actionable_items[0]}")
+
+# 表现卡片
+for card in data.performance_cards[:5]:
+    change_str = f"+{card.change:.1f}" if card.change > 0 else f"{card.change:.1f}"
+    print(f"{card.dimension_name}: {card.current_score:.1f} ({change_str})")
+
+# 可操作建议
+for rec in data.recommendations[:3]:
+    print(f"[P{rec.priority}] {rec.title}: {rec.time_required_minutes}分钟")
+
+# 成就
+for achievement in data.achievements:
+    print(f"{achievement.icon} {achievement.name}")
+
+# 仪表盘摘要
+print(data.summary_text)
+```
+
+#### DataExporter - 数据导出器
+
+```python
+from analytics import DataExporter, ExportFormat
+
+# 创建导出器
+exporter = DataExporter(config={"output_dir": "./exports"})
+
+# 导出 JSON
+json_result = exporter.export_to_json(dashboard_data, filename="report.json")
+print(f"JSON: {json_result.success} - {json_result.file_path}")
+
+# 导出 Excel
+excel_result = exporter.export_to_excel(dashboard_data, filename="report.xlsx")
+print(f"Excel: {excel_result.success} - {excel_result.file_path}")
+
+# 导出 PDF
+pdf_result = exporter.export_to_pdf(dashboard_data, filename="report.pdf")
+print(f"PDF: {pdf_result.success} - {pdf_result.file_path}")
+
+# 导出会话 CSV
+csv_result = exporter.export_to_csv(sessions, filename="sessions.csv")
+print(f"CSV: {csv_result.success} - {csv_result.file_path}")
+
+# 数据备份
+backup_result = exporter.create_backup(user_id, sessions, analytics_data)
+print(f"备份：{backup_result.success} - {backup_result.file_path}")
+
+# 恢复备份
+restored = exporter.restore_backup(backup_result.file_path)
+if restored["success"]:
+    print(f"恢复成功：{restored['user_id']}")
+```
 
 ### SceneManager - 场景管理器 (v0.5 新增)
 
@@ -660,7 +902,55 @@ questions:
 | v0.4 | ✅ 完成 | 2024-03 | CLI 和 Web 用户界面 |
 | v0.5 | ✅ 完成 | 2024-03 | 多场景支持（沙龙/会议）、场景管理器 |
 | v0.6 | ✅ 完成 | 2024-03 | 用户系统、进度追踪、数据可视化 |
+| v0.7 | ✅ 完成 | 2024-03 | 数据追踪与洞察、学习分析、推荐引擎 |
 | v1.0 | 📅 计划 | 2024-05 | 正式发布、完整功能 |
+
+### v0.7 完成内容
+
+- [x] TASK-037: 学习分析系统
+  - `analytics/learning.py` - LearningAnalytics, LearningProfile
+  - 学习模式识别（consistent/burst/gradual/irregular/declining）
+  - 强弱项分析（基于七维度评估）
+  - 学习洞察生成
+- [x] TASK-038: 行为追踪系统
+  - `analytics/behavior.py` - BehaviorTracker, BehaviorReport
+  - 会话模式分析（频率、时长、时间偏好）
+  - 参与度计算（inactive/low/medium/high/very_high）
+  - 改进模式监控（趋势、加速度）
+  - 平台期检测（none/approaching/in_plateau/breaking_through）
+- [x] TASK-039: 推荐引擎
+  - `analytics/recommender.py` - RecommendationEngine
+  - 主题推荐（基于弱点分析）
+  - 难度推荐（beginner/intermediate/advanced/expert）
+  - 学习路径生成（7/14/21 天计划）
+  - 练习方法推荐（刻意练习/间隔重复/场景变换等）
+- [x] TASK-040: 统计引擎
+  - `analytics/statistics.py` - StatisticsEngine
+  - 描述性统计（平均/中位数/标准差/四分位数）
+  - 百分位数据（P10/P25/P50/P75/P90/P95/P99）
+  - 分布分析（正态/偏态/双峰/均匀）
+  - 对比分析（匿名化人口数据、Z 分数、T 分数）
+  - 趋势统计（线性回归、R²、预测）
+  - 相关分析（皮尔逊相关系数）
+- [x] TASK-041: 洞察仪表盘
+  - `analytics/insights.py` - InsightsDashboard
+  - 关键洞察生成（performance/progress/behavior/recommendation/alert/achievement）
+  - 表现卡片（七维度对比）
+  - 趋势分析（多指标）
+  - 可操作建议（优先级排序）
+  - 成就系统（6 种成就徽章）
+- [x] TASK-042: 数据导出系统
+  - `analytics/export.py` - DataExporter
+  - PDF 导出（reportlab/matplotlib 降级方案）
+  - Excel 导出（openpyxl，多 sheet）
+  - JSON 导出（格式化/元数据）
+  - CSV 导出（会话数据）
+  - 数据备份与恢复
+- [x] TASK-DOC: 示例和文档
+  - `examples/analytics_demo.py` - 完整功能演示
+  - `analytics/__init__.py` - 模块导出
+  - 更新 README 和 core/__init__.py
+  - 更新 requirements.txt (pandas, numpy, reportlab, openpyxl)
 
 ### v0.6 完成内容
 
@@ -699,7 +989,6 @@ questions:
   - `scenes/salon/scene.py` - SalonScene, SalonSceneConfig
   - `scenes/salon/roles.py` - SalonRoleType, RoleConfig, RoleManager
   - 支持 4+ AI Agent 同时参与
-- [x] TASK-026: 沙龙场景 Agent
   - `scenes/salon/host.py` - SalonHostAgent (主持人)
   - `scenes/salon/speaker.py` - SalonSpeakerAgent (演讲者)
   - `scenes/salon/audience.py` - SalonAudienceAgent (观众)
