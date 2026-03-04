@@ -7,8 +7,14 @@ AgentScope AI Interview - Core Module
 - DialogueManager: 对话流程管理器
 - Message: 统一消息数据结构
 
-版本：v0.6.0
-新增功能:
+版本：v0.7.0
+新增功能 (v0.7):
+- 数据分析模块 (Analytics) - 学习分析、行为追踪、推荐引擎
+- 统计引擎 (Statistics) - 高级统计、百分位数、分布分析
+- 洞察仪表盘 (Insights) - 关键洞察、成就系统
+- 数据导出 (Export) - PDF/Excel/JSON 导出、备份恢复
+
+v0.6 功能:
 - 用户系统 (Users) - 用户管理、认证
 - 进度追踪 (Progress) - 学习进度、指标统计
 - 数据可视化 (Visualization) - 雷达图、趋势图
@@ -47,7 +53,7 @@ from .dialogue_manager import (
     DialogueManagerBuilder,
 )
 
-__version__ = "0.6.0"
+__version__ = "0.7.0"
 
 __all__ = [
     # Version
@@ -73,13 +79,40 @@ __all__ = [
 ]
 
 # =============================================================================
+# v0.7 Analytics Module (Data Tracking & Insights)
+# =============================================================================
+
+# =============================================================================
 # v0.2 扩展模块导出 (延迟导入，避免循环依赖)
 # 使用方式：from core import scenes, evaluation
 # =============================================================================
 
 def __getattr__(name: str):
-    """延迟导入 v0.2 模块"""
-    if name == "scenes":
+    """延迟导入 v0.2 和 v0.7 模块"""
+    # v0.7 Analytics Module
+    if name == "analytics":
+        import analytics
+        return analytics
+    elif name == "LearningAnalytics":
+        from analytics import LearningAnalytics
+        return LearningAnalytics
+    elif name == "BehaviorTracker":
+        from analytics import BehaviorTracker
+        return BehaviorTracker
+    elif name == "RecommendationEngine":
+        from analytics import RecommendationEngine
+        return RecommendationEngine
+    elif name == "StatisticsEngine":
+        from analytics import StatisticsEngine
+        return StatisticsEngine
+    elif name == "InsightsDashboard":
+        from analytics import InsightsDashboard
+        return InsightsDashboard
+    elif name == "DataExporter":
+        from analytics import DataExporter
+        return DataExporter
+    # v0.2 Scenes and Evaluation Module
+    elif name == "scenes":
         import scenes
         return scenes
     elif name == "evaluation":
