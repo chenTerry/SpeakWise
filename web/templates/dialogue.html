@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}对话中 - AgentScope AI Interview{% endblock %}
+
+{% block content %}
+<div class="dialogue-page">
+    <!-- 对话容器 -->
+    <div class="dialogue-container" id="dialogue-container" data-session-id="{{ session_id }}">
+        <!-- 对话头部 -->
+        <div class="dialogue-header">
+            <div class="dialogue-title" id="dialogue-title">
+                加载中...
+            </div>
+            <div class="dialogue-actions">
+                <div class="dialogue-status">
+                    <span class="status-indicator"></span>
+                    <span>进行中</span>
+                </div>
+                <button class="btn btn-danger btn-sm" id="end-button" style="margin-left: var(--spacing-md);">
+                    结束面试
+                </button>
+            </div>
+        </div>
+        
+        <!-- 消息区域 -->
+        <div class="dialogue-messages" id="dialogue-messages">
+            <!-- 消息将通过 JavaScript 动态加载 -->
+        </div>
+        
+        <!-- 输入区域 -->
+        <div class="dialogue-input-container">
+            <textarea 
+                id="dialogue-input" 
+                class="dialogue-input" 
+                placeholder="输入你的回答... (按 Enter 发送，Shift+Enter 换行)"
+                rows="3"
+            ></textarea>
+            <button class="btn btn-primary" id="send-button">
+                发送
+                <span class="btn-icon">→</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+.dialogue-page {
+    height: calc(100vh - 140px);
+    display: flex;
+    flex-direction: column;
+}
+
+.dialogue-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.dialogue-header {
+    flex-shrink: 0;
+}
+
+.dialogue-messages {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.dialogue-input-container {
+    flex-shrink: 0;
+}
+
+/* 滚动条样式 */
+.dialogue-messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+.dialogue-messages::-webkit-scrollbar-track {
+    background: var(--color-bg-secondary);
+}
+
+.dialogue-messages::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 4px;
+}
+
+.dialogue-messages::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary);
+}
+</style>
+
+<script>
+// 页面加载时初始化对话
+document.addEventListener('DOMContentLoaded', function() {
+    // 从 URL 获取 session_id
+    const container = document.getElementById('dialogue-container');
+    const sessionId = container?.dataset.sessionId;
+    
+    if (sessionId) {
+        // 初始化对话页面
+        if (window.DialoguePage) {
+            window.DialoguePage.init();
+        }
+    }
+});
+</script>
+{% endblock %}

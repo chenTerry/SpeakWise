@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}选择场景 - AgentScope AI Interview{% endblock %}
+
+{% block content %}
+<div class="scenes-page">
+    <!-- 页面标题 -->
+    <div class="page-header mb-4">
+        <h1 class="page-title">🎭 选择面试场景</h1>
+        <p class="page-subtitle">选择适合您的面试场景开始练习</p>
+    </div>
+    
+    <!-- 筛选器 -->
+    <div class="filter-section" id="filter-section">
+        <div class="filter-row">
+            <div class="filter-group">
+                <label for="filter-domain">领域</label>
+                <select id="filter-domain" class="filter-select">
+                    <option value="">全部</option>
+                    <option value="frontend">前端开发</option>
+                    <option value="backend">后端开发</option>
+                    <option value="system_design">系统设计</option>
+                    <option value="hr">HR 面试</option>
+                    <option value="general">综合面试</option>
+                    <option value="behavioral">行为面试</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="filter-difficulty">难度</label>
+                <select id="filter-difficulty" class="filter-select">
+                    <option value="">全部</option>
+                    <option value="1">★ 简单</option>
+                    <option value="2">★★ 较易</option>
+                    <option value="3">★★★ 中等</option>
+                    <option value="4">★★★★ 较难</option>
+                    <option value="5">★★★★★ 困难</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="filter-style">风格</label>
+                <select id="filter-style" class="filter-select">
+                    <option value="">全部</option>
+                    <option value="friendly">友好</option>
+                    <option value="strict">严格</option>
+                    <option value="pressure">压力</option>
+                </select>
+            </div>
+            
+            <div class="filter-group" style="justify-content: flex-end;">
+                <label>&nbsp;</label>
+                <button class="btn btn-secondary" onclick="SceneSelection.loadScenes()">
+                    🔄 重置筛选
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 场景列表 -->
+    <div class="scenes-container" id="scenes-container">
+        <!-- 场景卡片将通过 JavaScript 动态加载 -->
+    </div>
+</div>
+
+<style>
+.scenes-page {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.page-header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+}
+
+.page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-sm);
+}
+
+.page-subtitle {
+    color: var(--color-text-secondary);
+    font-size: 1.1rem;
+}
+</style>
+{% endblock %}

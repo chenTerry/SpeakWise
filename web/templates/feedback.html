@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}评估报告 - AgentScope AI Interview{% endblock %}
+
+{% block content %}
+<div class="feedback-page">
+    <!-- 反馈容器 -->
+    <div class="feedback-container" id="feedback-container" data-evaluation-id="{{ evaluation_id }}">
+        <!-- 内容将通过 JavaScript 动态加载 -->
+    </div>
+</div>
+
+<style>
+.feedback-page {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.feedback-container {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
+
+<script>
+// 页面加载时初始化反馈
+document.addEventListener('DOMContentLoaded', function() {
+    if (window.FeedbackPage) {
+        window.FeedbackPage.init();
+    }
+});
+</script>
+{% endblock %}
