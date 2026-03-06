@@ -836,7 +836,7 @@ class BehaviorTracker:
         elif variance < self.params["score_variance_threshold"] * 1.5:
             # 接近平台期
             return PlateauStatus.APPROACHING, 0, recent_scores
-        elif trend > 0.5:
+        elif trend == "improving":
             # 突破中
             return PlateauStatus.BREAKING_THROUGH, 0, recent_scores
 

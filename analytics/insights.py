@@ -1081,7 +1081,7 @@ class InsightsDashboard:
                     "name": a.name,
                     "description": a.description,
                     "icon": a.icon,
-                    "unlocked_at": a.unlocked_at.isoformat(),
+                    "unlocked_at": a.unlocked_at.isoformat() if isinstance(a.unlocked_at, datetime) else a.unlocked_at,
                     "category": a.category,
                     "progress": a.progress,
                 }
