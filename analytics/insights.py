@@ -303,12 +303,18 @@ class InsightsDashboard:
 
         return insights[:10]  # 最多显示 10 个关键洞察
 
-    def _create_learning_insights(self, learning_profile: Dict[str, Any]) -> List[KeyInsight]:
+    def _create_learning_insights(self, learning_profile: Any) -> List[KeyInsight]:
         """创建学习洞察"""
         insights = []
 
+        # Handle both dict and object types
+        def get_value(obj, key, default=None):
+            if isinstance(obj, dict):
+                return obj.get(key, default)
+            return getattr(obj, key, default)
+
         # 技能水平洞察
-        skill_level = learning_profile.get("skill_level", "unknown")
+        skill_level = get_value(learning_profile, "skill_level", "unknown")
         if skill_level != "unknown":
             level_names = {
                 "beginner": "初学者",
@@ -321,15 +327,15 @@ class InsightsDashboard:
                 category=InsightCategory.PERFORMANCE,
                 priority=InsightPriority.MEDIUM,
                 title="当前技能水平",
-                description=f"您目前的技能水平为{level_names.get(skill_level, skill_level)}",
+                description=f"您目前的技能水平为{level_names.get(skill_level.value if hasattr(skill_level, 'value') else skill_level, skill_level)}",
                 icon="📊",
-                metrics={"skill_level": skill_level},
+                metrics={"skill_level": str(skill_level)},
                 trend="neutral",
                 actionable_items=["继续练习以提升水平", "设定下一个水平目标"],
             ))
 
         # 学习模式洞察
-        learning_pattern = learning_profile.get("learning_pattern", "unknown")
+        learning_pattern = get_value(learning_profile, "learning_pattern", "unknown")
         if learning_pattern != "unknown":
             pattern_info = {
                 "consistent": ("稳定的学习习惯", "positive", "继续保持规律的练习节奏"),
@@ -338,7 +344,8 @@ class InsightsDashboard:
                 "irregular": ("不规律的学习", "negative", "建议建立固定的练习时间"),
                 "declining": ("需要关注的趋势", "negative", "适当调整学习方法或休息"),
             }
-            info = pattern_info.get(learning_pattern, ("未知模式", "neutral", ""))
+            pattern_str = learning_pattern.value if hasattr(learning_pattern, 'value') else str(learning_pattern)
+            info = pattern_info.get(pattern_str, ("未知模式", "neutral", ""))
             insights.append(KeyInsight(
                 insight_id=self._generate_insight_id(),
                 category=InsightCategory.BEHAVIOR,
@@ -386,14 +393,21 @@ class InsightsDashboard:
 
         return insights
 
-    def _create_behavior_insights(self, behavior_report: Dict[str, Any]) -> List[KeyInsight]:
+    def _create_behavior_insights(self, behavior_report: Any) -> List[KeyInsight]:
         """创建行为洞察"""
         insights = []
 
+        # Handle both dict and object types
+        def get_value(obj, key, default=None):
+            if isinstance(obj, dict):
+                return obj.get(key, default)
+            return getattr(obj, key, default)
+
         # 参与度洞察
-        engagement = behavior_report.get("engagement", {})
-        level = engagement.get("level", "unknown")
+        engagement = get_value(behavior_report, "engagement", {})
+        level = get_value(engagement, "level", "unknown")
         if level != "unknown":
+            level_str = level.value if hasattr(level, 'value') else str(level)
             level_info = {
                 "inactive": ("练习较少", "negative", "建议从每天 10 分钟开始"),
                 "low": ("低参与度", "negative", "尝试增加练习频率"),
@@ -401,7 +415,7 @@ class InsightsDashboard:
                 "high": ("高参与度", "positive", "表现优秀，继续保持"),
                 "very_high": ("非常高参与度", "positive", "注意劳逸结合"),
             }
-            info = level_info.get(level, ("未知", "neutral", ""))
+            info = level_info.get(level_str, ("未知", "neutral", ""))
             insights.append(KeyInsight(
                 insight_id=self._generate_insight_id(),
                 category=InsightCategory.BEHAVIOR,
@@ -415,7 +429,7 @@ class InsightsDashboard:
             ))
 
         # 连续天数洞察
-        current_streak = engagement.get("current_streak", 0)
+        current_streak = get_value(engagement, "current_streak", 0)
         if current_streak >= 7:
             insights.append(KeyInsight(
                 insight_id=self._generate_insight_id(),
@@ -428,7 +442,7 @@ class InsightsDashboard:
                 trend="positive",
                 actionable_items=["继续保持，挑战更长记录"],
             ))
-        elif current_streak == 0 and engagement.get("longest_streak", 0) > 0:
+        elif current_streak == 0 and get_value(engagement, "longest_streak", 0) > 0:
             insights.append(KeyInsight(
                 insight_id=self._generate_insight_id(),
                 category=InsightCategory.RECOMMENDATION,
@@ -442,31 +456,38 @@ class InsightsDashboard:
             ))
 
         # 平台期洞察
-        plateau = behavior_report.get("plateau_analysis", {})
-        if plateau.get("status") == "in_plateau":
+        plateau = get_value(behavior_report, "plateau_analysis", {})
+        plateau_status = get_value(plateau, "status", "")
+        if plateau_status == "in_plateau":
             insights.append(KeyInsight(
                 insight_id=self._generate_insight_id(),
                 category=InsightCategory.ALERT,
                 priority=InsightPriority.HIGH,
                 title="平台期提醒",
-                description=f"检测到平台期（已持续{plateau.get('duration_days', 0)}天）",
+                description=f"检测到平台期（已持续{get_value(plateau, 'duration_days', 0)}天）",
                 icon="⚠️",
-                metrics={"plateau_duration": plateau.get("duration_days")},
+                metrics={"plateau_duration": get_value(plateau, "duration_days")},
                 trend="negative",
-                actionable_items=plateau.get("recommendations", [])[:3],
+                actionable_items=get_value(plateau, "recommendations", [])[:3],
             ))
 
         return insights
 
-    def _create_statistical_insights(self, statistical_report: Dict[str, Any]) -> List[KeyInsight]:
+    def _create_statistical_insights(self, statistical_report: Any) -> List[KeyInsight]:
         """创建统计洞察"""
         insights = []
 
+        # Handle both dict and object types
+        def get_value(obj, key, default=None):
+            if isinstance(obj, dict):
+                return obj.get(key, default)
+            return getattr(obj, key, default)
+
         # 对比分析洞察
-        comparative = statistical_report.get("comparative_analysis")
+        comparative = get_value(statistical_report, "comparative_analysis")
         if comparative:
-            perf_level = comparative.get("performance_level", "average")
-            percentile = comparative.get("percentile_rank", 50)
+            perf_level = get_value(comparative, "performance_level", "average")
+            percentile = get_value(comparative, "percentile_rank", 50)
 
             if perf_level in ["excellent", "good"]:
                 insights.append(KeyInsight(
@@ -494,8 +515,8 @@ class InsightsDashboard:
                 ))
 
         # 趋势洞察
-        trend = statistical_report.get("trend_statistics", {})
-        trend_dir = trend.get("trend_direction", "stable")
+        trend = get_value(statistical_report, "trend_statistics", {})
+        trend_dir = get_value(trend, "trend_direction", "stable")
         if trend_dir == "upward":
             insights.append(KeyInsight(
                 insight_id=self._generate_insight_id(),
@@ -574,12 +595,20 @@ class InsightsDashboard:
     # =========================================================================
 
     def _generate_performance_cards(self, sessions: List[Dict[str, Any]],
-                                    statistical_report: Optional[Dict[str, Any]]) -> List[PerformanceCard]:
+                                    statistical_report: Optional[Any]) -> List[PerformanceCard]:
         """生成表现卡片"""
         cards = []
 
         if not sessions:
             return cards
+
+        # Handle both dict and object types
+        def get_value(obj, key, default=None):
+            if obj is None:
+                return default
+            if isinstance(obj, dict):
+                return obj.get(key, default)
+            return getattr(obj, key, default)
 
         # 计算各维度当前和之前的分数
         dimension_data = self._calculate_dimension_comparison(sessions)
@@ -587,9 +616,9 @@ class InsightsDashboard:
         # 获取百分位数据
         percentile_data = {}
         if statistical_report:
-            comp = statistical_report.get("comparative_analysis", {})
+            comp = get_value(statistical_report, "comparative_analysis", {})
             if comp:
-                percentile_data["overall_quality"] = comp.get("percentile_rank", 50)
+                percentile_data["overall_quality"] = get_value(comp, "percentile_rank", 50)
 
         for dim, data in dimension_data.items():
             dim_name = self.DIMENSION_NAMES.get(dim, dim)
@@ -759,45 +788,55 @@ class InsightsDashboard:
     # =========================================================================
 
     def _generate_actionable_recommendations(self,
-                                             learning_profile: Optional[Dict[str, Any]],
-                                             behavior_report: Optional[Dict[str, Any]],
-                                             recommendation_report: Optional[Dict[str, Any]]) -> List[ActionableRecommendation]:
+                                             learning_profile: Optional[Any],
+                                             behavior_report: Optional[Any],
+                                             recommendation_report: Optional[Any]) -> List[ActionableRecommendation]:
         """生成可操作建议"""
         recommendations = []
 
+        # Handle both dict and object types
+        def get_value(obj, key, default=None):
+            if obj is None:
+                return default
+            if isinstance(obj, dict):
+                return obj.get(key, default)
+            return getattr(obj, key, default)
+
         # 从推荐报告获取
         if recommendation_report:
-            topic_recs = recommendation_report.get("topic_recommendations", [])
+            topic_recs = get_value(recommendation_report, "topic_recommendations", [])
             for i, rec in enumerate(topic_recs[:3]):
+                rec_dict = rec if isinstance(rec, dict) else getattr(rec, '__dict__', {})
                 recommendations.append(ActionableRecommendation(
                     rec_id=self._generate_rec_id(),
-                    title=rec.get("topic_name", "专项练习"),
-                    description=rec.get("reason", ""),
-                    priority=rec.get("priority", 3),
-                    estimated_impact="high" if rec.get("priority", 3) >= 4 else "medium",
-                    time_required_minutes=rec.get("estimated_duration_minutes", 20),
+                    title=get_value(rec, "topic_name", rec_dict.get("topic_name", "专项练习")),
+                    description=get_value(rec, "reason", rec_dict.get("reason", "")),
+                    priority=get_value(rec, "priority", rec_dict.get("priority", 3)),
+                    estimated_impact="high" if get_value(rec, "priority", rec_dict.get("priority", 3)) >= 4 else "medium",
+                    time_required_minutes=get_value(rec, "estimated_duration_minutes", rec_dict.get("estimated_duration_minutes", 20)),
                     steps=[
-                        f"选择{rec.get('topic_name', '该主题')}练习",
+                        f"选择{get_value(rec, 'topic_name', rec_dict.get('topic_name', '该主题'))}练习",
                         "专注练习 20 分钟",
                         "记录练习心得",
                         "回顾反馈并改进",
                     ],
-                    related_dimensions=[rec.get("dimension", "")],
+                    related_dimensions=[get_value(rec, "dimension", rec_dict.get("dimension", ""))],
                 ))
 
         # 基于弱点生成
         if learning_profile:
-            weaknesses = learning_profile.get("weaknesses", [])
+            weaknesses = get_value(learning_profile, "weaknesses", [])
             for weakness in weaknesses[:2]:
-                dim = weakness.get("dimension", "")
+                weakness_dict = weakness if isinstance(weakness, dict) else getattr(weakness, '__dict__', {})
+                dim = get_value(weakness, "dimension", weakness_dict.get("dimension", ""))
                 dim_name = self.DIMENSION_NAMES.get(dim, "该维度")
-                suggestions = weakness.get("suggestions", [])
+                suggestions = get_value(weakness, "suggestions", weakness_dict.get("suggestions", []))
 
                 recommendations.append(ActionableRecommendation(
                     rec_id=self._generate_rec_id(),
                     title=f"加强{dim_name}",
                     description=f"针对{dim_name}的专项提升计划",
-                    priority=4 if weakness.get("priority") == "high" else 3,
+                    priority=4 if get_value(weakness, "priority", weakness_dict.get("priority")) == "high" else 3,
                     estimated_impact="high",
                     time_required_minutes=30,
                     steps=suggestions[:4] if suggestions else [
@@ -811,9 +850,10 @@ class InsightsDashboard:
 
         # 基于行为生成
         if behavior_report:
-            plateau = behavior_report.get("plateau_analysis", {})
-            if plateau.get("status") == "in_plateau":
-                recs = plateau.get("recommendations", [])
+            plateau = get_value(behavior_report, "plateau_analysis", {})
+            plateau_status = get_value(plateau, "status", "")
+            if plateau_status == "in_plateau":
+                recs = get_value(plateau, "recommendations", [])
                 recommendations.append(ActionableRecommendation(
                     rec_id=self._generate_rec_id(),
                     title="突破平台期",

@@ -12,6 +12,7 @@ Design Principles:
 - 事件驱动更新
 """
 
+from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from typing import Optional, List, Dict, Any
 from sqlalchemy.orm import Session
@@ -19,6 +20,27 @@ from sqlalchemy.orm import Session
 from .metrics import ProgressMetricsCalculator, SessionMetrics, AggregatedMetrics, EvaluationDimension
 from users.repository import ProgressRepository, SessionRepository
 from users.database import Database
+
+
+@dataclass
+class ProgressResult:
+    """
+    进度结果
+
+    包含用户的进度统计数据
+
+    Attributes:
+        user_id: 用户 ID
+        total_sessions: 总会话数
+        average_score: 平均分
+        improvement_rate: 改进率
+    """
+    user_id: int
+    total_sessions: int = 0
+    average_score: float = 0.0
+    improvement_rate: float = 0.0
+    streak_days: int = 0
+    metadata: Dict[str, Any] = field(default_factory=dict)
 
 
 class ProgressTracker:
@@ -34,12 +56,12 @@ class ProgressTracker:
         report = tracker.generate_report()
     """
     
-    def __init__(self, user_id: int, db: Optional[Database] = None):
+    def __init__(self, user_id: int = 0, db: Optional[Database] = None):
         """
         初始化进度追踪器
         
         Args:
-            user_id: 用户 ID
+            user_id: 用户 ID（可选，默认为 0）
             db: 数据库实例（可选）
         """
         self.user_id = user_id
@@ -346,3 +368,51 @@ class ProgressTracker:
                 })
         
         return milestones
+
+    def calculate_progress(
+        self,
+        user_id: int,
+        sessions: List[Any],
+    ) -> "ProgressResult":
+        """
+        计算用户进度
+
+        Args:
+            user_id: 用户 ID
+            sessions: 会话记录列表
+
+        Returns:
+            进度结果对象
+        """
+        total_sessions = len(sessions)
+        if total_sessions == 0:
+            return ProgressResult(
+                user_id=user_id,
+                total_sessions=0,
+                average_score=0.0,
+                improvement_rate=0.0,
+            )
+
+        # 计算平均分
+        total_score = sum(s.score for s in sessions)
+        average_score = total_score / total_sessions
+
+        # 计算改进率
+        if total_sessions >= 2:
+            first_half = sessions[:total_sessions // 2]
+            second_half = sessions[total_sessions // 2:]
+            first_avg = sum(s.score for s in first_half) / len(first_half)
+            second_avg = sum(s.score for s in second_half) / len(second_half)
+            if first_avg > 0:
+                improvement_rate = ((second_avg - first_avg) / first_avg) * 100
+            else:
+                improvement_rate = 0.0
+        else:
+            improvement_rate = 0.0
+
+        return ProgressResult(
+            user_id=user_id,
+            total_sessions=total_sessions,
+            average_score=average_score,
+            improvement_rate=improvement_rate,
+        )

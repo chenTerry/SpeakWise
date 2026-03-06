@@ -59,6 +59,15 @@ class EngagementMetrics:
     current_streak: int
     last_active: Optional[datetime]
 
+    def get(self, key: str, default: Any = None) -> Any:
+        """Dict-like access for compatibility"""
+        if hasattr(self, key):
+            value = getattr(self, key)
+            if hasattr(value, 'value'):
+                return value.value
+            return value
+        return default
+
 
 @dataclass
 class ImprovementPattern:
@@ -79,6 +88,15 @@ class PlateauAnalysis:
     breakthrough_probability: float  # 0-1
     recommendations: List[str] = field(default_factory=list)
 
+    def get(self, key: str, default: Any = None) -> Any:
+        """Dict-like access for compatibility"""
+        if hasattr(self, key):
+            value = getattr(self, key)
+            if hasattr(value, 'value'):
+                return value.value
+            return value
+        return default
+
 
 @dataclass
 class BehaviorReport:
@@ -91,6 +109,31 @@ class BehaviorReport:
     plateau_analysis: PlateauAnalysis
     behavioral_insights: List[str] = field(default_factory=list)
     generated_at: datetime = field(default_factory=datetime.utcnow)
+
+    def get(self, key: str, default: Any = None) -> Any:
+        """Dict-like access for compatibility"""
+        if hasattr(self, key):
+            value = getattr(self, key)
+            # Convert dataclass to dict for nested access
+            if hasattr(value, '__dataclass_fields__'):
+                return value
+            return value
+        return default
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert to dictionary"""
+        return {
+            "user_id": self.user_id,
+            "period_days": self.period_days,
+            "session_pattern": self.session_pattern.value if hasattr(self.session_pattern, 'value') else self.session_pattern,
+            "engagement": {
+                "level": self.engagement.level if hasattr(self.engagement, 'level') else "unknown",
+                "score": self.engagement.score if hasattr(self.engagement, 'score') else 0,
+            },
+            "improvement_pattern": self.improvement_pattern.value if hasattr(self.improvement_pattern, 'value') else self.improvement_pattern,
+            "behavioral_insights": self.behavioral_insights,
+            "generated_at": self.generated_at.isoformat() if self.generated_at else None,
+        }
 
 
 class BehaviorTracker:

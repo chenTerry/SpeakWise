@@ -473,3 +473,21 @@ class MeetingManagerAgent(BaseAgent):
         self._decisions.clear()
         self._action_items.clear()
         self.current_phase = "opening"
+
+    def get_role(self) -> str:
+        """获取角色描述"""
+        from .scene import MeetingType
+
+        type_names = {
+            MeetingType.REQUIREMENT_REVIEW: "需求评审会",
+            MeetingType.STANDUP: "每日站会",
+            MeetingType.CONFLICT_RESOLUTION: "冲突解决会",
+            MeetingType.PROJECT_KICKOFF: "项目启动会",
+            MeetingType.RETROSPECTIVE: "项目复盘会",
+        }
+
+        meeting_name = type_names.get(
+            self.meeting_type,
+            "项目会议",
+        ) if hasattr(self.meeting_type, 'value') else "项目会议"
+        return f"{meeting_name}主持人，负责'{self.project_name}'项目的会议管理"

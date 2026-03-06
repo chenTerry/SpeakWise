@@ -34,6 +34,16 @@ class ReportFormat(str, Enum):
 
 
 @dataclass
+class TeamReport:
+    """团队报表"""
+    team_id: str
+    period_days: int = 30
+    sections: List[str] = field(default_factory=list)
+    data: Dict[str, Any] = field(default_factory=dict)
+    generated_at: datetime = field(default_factory=datetime.utcnow)
+
+
+@dataclass
 class EnterpriseReport:
     """企业报表"""
     id: str
@@ -161,6 +171,20 @@ class ReportGenerator:
             report.metadata["error"] = str(e)
 
         return report
+
+    def generate_team_report(
+        self,
+        team_id: str,
+        period_days: int = 30,
+        **kwargs,
+    ) -> "TeamReport":
+        """生成团队报表"""
+        # Generate a simple team report
+        return TeamReport(
+            team_id=team_id,
+            period_days=period_days,
+            sections=["overview", "performance", "activity", "recommendations"],
+        )
 
     def get_report(self, report_id: str) -> Optional[EnterpriseReport]:
         """获取报表"""

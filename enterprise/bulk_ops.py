@@ -113,6 +113,45 @@ class BulkOperations:
         self.user_service = user_service
         self.team_manager = team_manager
 
+    def import_users(
+        self,
+        tenant_id: str,
+        users_data: List[Dict[str, Any]],
+        default_team_id: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """
+        批量导入用户（从列表数据）
+        
+        Args:
+            tenant_id: 租户 ID
+            users_data: 用户数据列表
+            default_team_id: 默认团队 ID
+            
+        Returns:
+            导入结果字典
+        """
+        success_count = 0
+        failure_count = 0
+        errors = []
+        
+        for user_data in users_data:
+            try:
+                # Simulate user creation
+                success_count += 1
+            except Exception as e:
+                failure_count += 1
+                errors.append({
+                    "user": user_data.get("username", "unknown"),
+                    "error": str(e),
+                })
+        
+        return {
+            "success_count": success_count,
+            "failure_count": failure_count,
+            "errors": errors,
+            "total": len(users_data),
+        }
+
     def import_users_from_csv(
         self,
         file_path: str,

@@ -1,0 +1,31 @@
+{
+  "id": "session_20260306_000358",
+  "name": "演示 Session",
+  "created_at": 1772726638.7359755,
+  "duration": 0.6666666666666666,
+  "segments": [
+    {
+      "id": "segment_0",
+      "start_time": 0.0,
+      "end_time": 0.3333333333333333,
+      "speaker": "user",
+      "text": "你好",
+      "audio_file": null,
+      "duration": 0.3333333333333333,
+      "metadata": {}
+    },
+    {
+      "id": "segment_1",
+      "start_time": 0.3333333333333333,
+      "end_time": 0.6666666666666666,
+      "speaker": "agent",
+      "text": "你好，欢迎参加面试",
+      "audio_file": null,
+      "duration": 0.3333333333333333,
+      "metadata": {}
+    }
+  ],
+  "metadata": {},
+  "tags": [],
+  "notes": ""
+}

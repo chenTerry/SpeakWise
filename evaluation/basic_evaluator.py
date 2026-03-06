@@ -100,6 +100,16 @@ class EvaluationResult:
     suggestions: List[str] = field(default_factory=list)
     metadata: Dict[str, Any] = field(default_factory=dict)
 
+    @property
+    def grade(self) -> str:
+        """Alias for level for backward compatibility"""
+        return self.level
+
+    @property
+    def dimensions(self) -> Dict[str, float]:
+        """Get dimension scores as simple dict"""
+        return {k.value: v.score for k, v in self.dimension_scores.items()}
+
     def get_score(self, dimension: EvaluationDimension) -> float:
         """获取指定维度得分"""
         if dimension in self.dimension_scores:
@@ -234,6 +244,77 @@ class EvaluationReport:
 
         return "\n".join(lines)
 
+    def generate_markdown_report(self) -> str:
+        """
+        生成 Markdown 格式报告
+
+        Returns:
+            Markdown 格式的报告
+        """
+        lines = []
+        lines.append("# 面试评估报告")
+        lines.append("")
+
+        # 基本信息
+        lines.append("## 基本信息")
+        if self.candidate_info:
+            lines.append(f"- **候选人**：{self.candidate_info.get('name', '未知')}")
+            lines.append(f"- **面试岗位**：{self.candidate_info.get('position', '未知')}")
+        if self.interview_info:
+            lines.append(f"- **面试领域**：{self.interview_info.get('domain', '未知')}")
+            lines.append(f"- **面试风格**：{self.interview_info.get('style', '未知')}")
+            lines.append(f"- **面试时长**：{self.interview_info.get('duration', '未知')}分钟")
+        lines.append(f"- **评估时间**：{self.generated_at}")
+        lines.append("")
+
+        # 总体评分
+        lines.append("## 总体评分")
+        lines.append(f"- **得分**：{self.result.overall_score:.2f} / 5.0")
+        lines.append(f"- **评级**：{self.result.level}")
+        lines.append("")
+
+        # 维度评分
+        lines.append("## 维度评分")
+        dimension_names = {
+            EvaluationDimension.CONTENT_QUALITY: "内容质量",
+            EvaluationDimension.EXPRESSION_CLARITY: "表达清晰度",
+            EvaluationDimension.PROFESSIONAL_KNOWLEDGE: "专业知识",
+        }
+        for dim, score in self.result.dimension_scores.items():
+            name = dimension_names.get(dim, dim.value)
+            lines.append(f"- **{name}**：{score.score:.2f}")
+            if score.comments:
+                lines.append(f"  - 评语：{score.comments}")
+        lines.append("")
+
+        # 评估摘要
+        lines.append("## 评估摘要")
+        lines.append(self.result.summary)
+        lines.append("")
+
+        # 优势
+        if self.result.strengths:
+            lines.append("## 优势")
+            for strength in self.result.strengths:
+                lines.append(f"- {strength}")
+            lines.append("")
+
+        # 待改进
+        if self.result.weaknesses:
+            lines.append("## 待改进")
+            for weakness in self.result.weaknesses:
+                lines.append(f"- {weakness}")
+            lines.append("")
+
+        # 建议
+        if self.result.suggestions:
+            lines.append("## 改进建议")
+            for suggestion in self.result.suggestions:
+                lines.append(f"- {suggestion}")
+            lines.append("")
+
+        return "\n".join(lines)
+
     def generate_json_report(self) -> Dict[str, Any]:
         """
         生成 JSON 格式报告
@@ -339,23 +420,30 @@ class BasicEvaluator:
 
     def evaluate(
         self,
-        dialogue_history: List[Message],
+        dialogue_history,
         question_answers: Optional[List[Dict[str, str]]] = None,
     ) -> EvaluationResult:
         """
         评估对话历史
 
         Args:
-            dialogue_history: 对话历史消息列表
+            dialogue_history: 对话历史消息列表或 DialogueContext 对象
             question_answers: 问答对列表（可选）
 
         Returns:
             评估结果
         """
-        logger.info(f"开始评估，对话轮数：{len(dialogue_history)}")
+        # Support both DialogueContext and List[Message]
+        from core.agent import DialogueContext
+        if isinstance(dialogue_history, DialogueContext):
+            messages = dialogue_history.messages
+        else:
+            messages = dialogue_history
+
+        logger.info(f"开始评估，对话轮数：{len(messages)}")
 
         # 提取候选人回答
-        answers = self._extract_answers(dialogue_history)
+        answers = self._extract_answers(messages)
 
         # 评估各维度
         content_score = self._evaluate_content_quality(answers)
@@ -962,3 +1050,24 @@ class BasicEvaluator:
             ]
 
         return suggestions[:5]
+
+    def generate_report(
+        self,
+        result: EvaluationResult,
+        format: str = "markdown",
+    ) -> str:
+        """
+        生成评估报告
+
+        Args:
+            result: 评估结果
+            format: 报告格式 (markdown/text)
+
+        Returns:
+            格式化的报告字符串
+        """
+        report = EvaluationReport.from_result(result)
+        if format == "markdown":
+            return report.generate_markdown_report()
+        return report.generate_text_report()
+

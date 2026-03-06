@@ -13,8 +13,10 @@ Design Principles:
 """
 
 import os
-from typing import Optional
+from dataclasses import dataclass, field
+from typing import Optional, List
 from contextlib import contextmanager
+from datetime import datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.pool import StaticPool
@@ -22,37 +24,67 @@ from sqlalchemy.pool import StaticPool
 from .tables import Base
 
 
+@dataclass
+class SessionRecord:
+    """
+    会话记录
+
+    用于记录用户的练习会话数据
+
+    Attributes:
+        user_id: 用户 ID
+        scene_type: 场景类型
+        score: 评分
+        duration: 持续时间（秒）
+        created_at: 创建时间
+    """
+    user_id: int
+    scene_type: str
+    score: float = 0.0
+    duration: int = 0
+    created_at: datetime = field(default_factory=datetime.utcnow)
+    id: Optional[int] = None
+    metadata: dict = field(default_factory=dict)
+
+
 class Database:
     """
     数据库管理类（Singleton）
-    
+
     管理数据库连接和会话工厂
-    
+
     Usage:
         db = Database.get_instance()
         db.initialize("sqlite:///users.db")
-        
+
         with db.get_session() as session:
             # 使用 session
     """
-    
+
     _instance: Optional["Database"] = None
-    
-    def __new__(cls) -> "Database":
+
+    def __new__(cls, db_path: Optional[str] = None) -> "Database":
         """Singleton 实例创建"""
         if cls._instance is None:
             cls._instance = super().__new__(cls)
             cls._instance._initialized = False
         return cls._instance
-    
-    def __init__(self):
+
+    def __init__(self, db_path: Optional[str] = None):
         """初始化数据库（仅调用一次）"""
-        if self._initialized:
+        if self._initialized and not db_path:
             return
-        
+
         self.engine = None
         self.SessionLocal = None
         self._initialized = True
+
+        # Auto-initialize if db_path is provided
+        if db_path:
+            if db_path == ":memory:":
+                self.initialize("sqlite:///:memory:")
+            else:
+                self.initialize(f"sqlite:///{db_path}")
     
     @classmethod
     def get_instance(cls) -> "Database":

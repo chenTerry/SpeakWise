@@ -44,40 +44,73 @@ class UserNotFoundError(UserServiceError):
 class UserService:
     """
     用户服务类
-    
+
     提供用户相关的业务逻辑：
     - 用户注册、登录、注销
     - 用户信息管理
     - Session 管理
     - 进度追踪集成
     """
-    
+
     def __init__(self, db: Optional[Database] = None,
                  auth_service: Optional[AuthService] = None,
-                 session_manager: Optional[SessionManager] = None):
+                 session_manager: Optional[SessionManager] = None,
+                 db_path: Optional[str] = None):
         """
         初始化用户服务
-        
+
         Args:
             db: 数据库实例（可选，默认使用单例）
             auth_service: 认证服务（可选）
             session_manager: Session 管理器（可选）
+            db_path: 数据库路径（可选，用于创建新的数据库实例）
         """
-        self.db = db or Database.get_instance()
-        
+        if db:
+            self.db = db
+        elif db_path:
+            self.db = Database(db_path=db_path)
+        else:
+            self.db = Database.get_instance()
+
         # 初始化认证服务
         if auth_service:
             self.auth_service = auth_service
         else:
             # 使用默认密钥（生产环境应从配置读取）
             self.auth_service = AuthService(secret_key="agentscope-secret-key-demo")
-        
+
         # 初始化 Session 管理器
         self.session_manager = session_manager or SessionManager()
-    
+
     # =========================================================================
     # User Registration & Authentication
     # =========================================================================
+
+    def create_user(self, username: str, email: str, password: str,
+                    display_name: Optional[str] = None) -> str:
+        """
+        创建用户（便捷方法）
+
+        Args:
+            username: 用户名
+            email: 邮箱
+            password: 密码
+            display_name: 显示名称
+
+        Returns:
+            用户 ID
+
+        Raises:
+            UserServiceError: 创建失败
+        """
+        user_data = UserCreate(
+            username=username,
+            email=email,
+            password=password,
+            display_name=display_name or username
+        )
+        result = self.register(user_data)
+        return result.id
     
     def register(self, user_data: UserCreate) -> UserResponse:
         """
@@ -173,15 +206,8 @@ class UserService:
                 username=user.username
             )
             
-            return {
-                "token": token,
-                "session_id": session_id,
-                "user": {
-                    "id": user.id,
-                    "username": user.username,
-                    "display_name": user.display_name
-                }
-            }
+            # Return token string for backward compatibility
+            return token
     
     def logout(self, session_id: str) -> bool:
         """

@@ -266,10 +266,12 @@ class SceneRegistry:
                     config,
                 )
                 scene_class = self._scenes[actual_type]
+                # Filter out scene_key as it's used by SceneManager, not the scene class
+                filtered_kwargs = {k: v for k, v in kwargs.items() if k != 'scene_key'}
                 scene = scene_class(
                     config=scene_config,
                     global_config=global_config,
-                    **kwargs,
+                    **filtered_kwargs,
                 )
             else:
                 raise SceneRegistryError(f"未找到场景类型：{scene_type}")

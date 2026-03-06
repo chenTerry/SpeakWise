@@ -250,8 +250,17 @@ class StatisticsEngine:
         """提取分数数据"""
         scores = []
         for session in sessions:
+            # Try multiple score sources
+            score = 0.0
+            
+            # First try evaluation_result.overall_quality
             eval_result = session.get("evaluation_result", {})
             score = eval_result.get("overall_quality", 0.0)
+            
+            # If not found, try direct score field
+            if score == 0.0:
+                score = session.get("score", 0.0)
+            
             if score > 0:
                 scores.append(score)
         return scores

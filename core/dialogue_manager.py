@@ -380,10 +380,16 @@ class DialogueManagerBuilder:
     def __init__(self):
         self._agents: List[BaseAgent] = []
         self._config: Optional[Config] = None
+        self._context: Optional[DialogueContext] = None
     
     def with_config(self, config: Config) -> "DialogueManagerBuilder":
         """设置配置"""
         self._config = config
+        return self
+    
+    def with_context(self, context: DialogueContext) -> "DialogueManagerBuilder":
+        """设置对话上下文"""
+        self._context = context
         return self
     
     def add_agent(self, agent: BaseAgent) -> "DialogueManagerBuilder":
@@ -397,5 +403,8 @@ class DialogueManagerBuilder:
         return self
     
     def build(self) -> DialogueManager:
-        """构建 DialogueManager"""
-        return DialogueManager(self._agents, self._config)
+        """构建对话管理器"""
+        manager = DialogueManager(self._agents, self._config)
+        if self._context:
+            manager.context = self._context
+        return manager

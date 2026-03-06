@@ -40,6 +40,28 @@ from .base import BaseScene, SceneConfig, SceneState
 from .registry import SceneRegistry, SceneRegistryError
 from .manager import SceneManager, SceneManagerError, SceneTransition
 
+# Import scene implementations for auto-registration
+from .interview.scene import InterviewScene
+from .salon.scene import SalonScene
+from .meeting.scene import MeetingScene
+
+# Auto-register scenes
+def _register_default_scenes():
+    """Register default scene types"""
+    registry = SceneRegistry.get_instance()
+    
+    if not registry.has_scene("interview"):
+        registry.register("interview", InterviewScene)
+    
+    if not registry.has_scene("salon"):
+        registry.register("salon", SalonScene)
+    
+    if not registry.has_scene("meeting"):
+        registry.register("meeting", MeetingScene)
+
+# Auto-register on module import
+_register_default_scenes()
+
 __all__ = [
     # Base Scene
     "BaseScene",
@@ -52,4 +74,8 @@ __all__ = [
     "SceneManager",
     "SceneManagerError",
     "SceneTransition",
+    # Scene implementations
+    "InterviewScene",
+    "SalonScene",
+    "MeetingScene",
 ]

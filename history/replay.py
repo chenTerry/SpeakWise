@@ -77,6 +77,15 @@ class ReplayNote:
 
 
 @dataclass
+class ReplayData:
+    """回放数据"""
+    session_id: str
+    steps: List[ReplayStep] = field(default_factory=list)
+    notes: List[ReplayNote] = field(default_factory=list)
+    metadata: Dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass
 class ReplayState:
     """回放状态"""
     current_step: int = 0
@@ -295,18 +304,39 @@ class SessionReplay:
     def get_current_step(self) -> Optional[ReplayStep]:
         """
         获取当前步骤
-        
+
         Returns:
             当前步骤的 ReplayStep，如果没有步骤则返回 None
         """
         if not self.steps:
             return None
-        
+
         if 0 <= self.state.current_step < len(self.steps):
             return self.steps[self.state.current_step]
-        
+
         return None
-    
+
+    def add_step(self, step: Optional["ReplayStep"] = None, speaker: str = "", content: str = "") -> None:
+        """
+        添加步骤到回放列表
+
+        Args:
+            step: 要添加的步骤（可选）
+            speaker: 说话者（可选）
+            content: 内容（可选）
+        """
+        if step is None:
+            # Create a step from speaker and content
+            step = ReplayStep(
+                index=len(self.steps),
+                timestamp=datetime.utcnow(),
+                role=speaker,  # Use role field
+                content=content,
+                metadata={},
+            )
+        self.steps.append(step)
+        self.state.total_steps = len(self.steps)
+
     def get_step_at(self, index: int) -> Optional[ReplayStep]:
         """
         获取指定索引的步骤
@@ -365,13 +395,25 @@ class SessionReplay:
     def pause(self) -> None:
         """暂停播放"""
         self.state.is_playing = False
-    
+
     def stop(self) -> None:
         """停止播放并回到开始"""
         self.state.is_playing = False
         self.state.current_step = 0
         self._notify_step_change()
-    
+
+    def start_session(self, session_id: int) -> bool:
+        """
+        开始会话回放
+
+        Args:
+            session_id: 会话 ID
+
+        Returns:
+            是否成功加载会话
+        """
+        return self.load(session_id)
+
     def set_speed(self, speed: float) -> None:
         """
         设置播放速度
@@ -599,7 +641,7 @@ class SessionReplay:
     def get_summary(self) -> Dict[str, Any]:
         """
         获取回放摘要
-        
+
         Returns:
             摘要字典
         """
@@ -613,3 +655,25 @@ class SessionReplay:
             "notes_count": len(self.notes),
             "overall_score": self.evaluation_result.get("overall_score", 0),
         }
+
+    def end_session(self) -> None:
+        """
+        结束会话回放
+
+        标记会话已结束
+        """
+        self.state.is_playing = False
+
+    def get_replay_data(self) -> "ReplayData":
+        """
+        获取回放数据
+
+        Returns:
+            包含所有回放步骤的数据对象
+        """
+        return ReplayData(
+            session_id=self.session_id or "",
+            steps=self.steps,
+            notes=self.notes,
+            metadata=self.session_info,
+        )

@@ -332,3 +332,13 @@ class SalonHostAgent(BaseAgent):
         self._turn_count = 0
         self._key_points.clear()
         self.current_phase = "opening"
+
+    def get_role(self) -> str:
+        """获取角色描述"""
+        style_descriptions = {
+            "formal": "专业正式型",
+            "casual": "轻松亲切型",
+            "debate": "引导辩论型",
+        }
+        style_desc = style_descriptions.get(self.discussion_style, "专业型")
+        return f"{style_desc}沙龙主持人，负责引导关于'{self.topic}'的讨论"

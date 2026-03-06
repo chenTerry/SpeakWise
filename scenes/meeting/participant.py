@@ -534,3 +534,17 @@ class MeetingParticipantAgent(BaseAgent):
         self._questions.clear()
         self._commitments.clear()
         self.current_phase = "opening"
+
+    def get_role(self) -> str:
+        """获取角色描述"""
+        role_names = {
+            "pm": "产品经理",
+            "tech_lead": "技术负责人",
+            "developer": "开发工程师",
+            "qa": "测试工程师",
+            "project_manager": "项目经理",
+            "scrum_master": "敏捷教练",
+            "participant": "参与者",
+        }
+        role_name = role_names.get(self.role, "参与者")
+        return f"{role_name}，参与'{self.project_name}'项目会议"

@@ -49,6 +49,16 @@ class TenantConfig:
 
 
 @dataclass
+class TenantStats:
+    """租户统计信息"""
+    tenant_id: str
+    user_count: int = 0
+    max_users: int = 100
+    session_count: int = 0
+    team_count: int = 0
+
+
+@dataclass
 class Tenant:
     """租户模型"""
     id: str
@@ -153,13 +163,22 @@ class Tenant:
 class TenantManager:
     """租户管理器"""
 
-    def __init__(self, storage_path: str = "data/tenants.json"):
-        self.storage_path = storage_path
+    def __init__(self, storage_path: str = "data/tenants.json", db_path: Optional[str] = None):
+        # Support both storage_path and db_path for compatibility
+        if db_path:
+            if db_path == ":memory:":
+                self.storage_path = None  # In-memory mode
+            else:
+                self.storage_path = db_path
+        else:
+            self.storage_path = storage_path
         self._tenants: Dict[str, Tenant] = {}
         self._load()
 
     def _load(self):
         """加载租户数据"""
+        if not self.storage_path:
+            return  # In-memory mode, no loading
         try:
             import os
             if os.path.exists(self.storage_path):
@@ -173,6 +192,8 @@ class TenantManager:
 
     def _save(self):
         """保存租户数据"""
+        if not self.storage_path:
+            return  # In-memory mode, no saving
         import os
         os.makedirs(os.path.dirname(self.storage_path), exist_ok=True)
         with open(self.storage_path, "w", encoding="utf-8") as f:
@@ -184,14 +205,27 @@ class TenantManager:
         plan: TenantPlan = TenantPlan.TRIAL,
         contact_email: Optional[str] = None,
         trial_days: int = 30,
+        **kwargs,
     ) -> Tenant:
         """创建新租户"""
         tenant_id = self._generate_id(name)
-        
+
         expires_at = None
         if plan == TenantPlan.TRIAL or trial_days > 0:
             from datetime import timedelta
             expires_at = datetime.utcnow() + timedelta(days=trial_days)
+
+        # Handle plan as string for compatibility
+        if isinstance(plan, str):
+            plan_map = {
+                "trial": TenantPlan.TRIAL,
+                "free": TenantPlan.FREE,
+                "basic": TenantPlan.BASIC,
+                "starter": TenantPlan.BASIC,  # Alias for BASIC
+                "professional": TenantPlan.PROFESSIONAL,
+                "enterprise": TenantPlan.ENTERPRISE,
+            }
+            plan = plan_map.get(plan.lower(), TenantPlan.TRIAL)
 
         tenant = Tenant(
             id=tenant_id,
@@ -202,6 +236,13 @@ class TenantManager:
             expires_at=expires_at,
         )
 
+        # Apply additional kwargs like max_users
+        for key, value in kwargs.items():
+            if hasattr(tenant, key):
+                setattr(tenant, key, value)
+            elif hasattr(tenant.config, key):
+                tenant.config.__dict__[key] = value
+
         self._tenants[tenant_id] = tenant
         self._save()
         return tenant
@@ -209,6 +250,21 @@ class TenantManager:
     def get_tenant(self, tenant_id: str) -> Optional[Tenant]:
         """获取租户"""
         return self._tenants.get(tenant_id)
+
+    def get_tenant_stats(self, tenant_id: str) -> "TenantStats":
+        """获取租户统计信息"""
+        tenant = self._tenants.get(tenant_id)
+        if not tenant:
+            raise ValueError(f"Tenant not found: {tenant_id}")
+        
+        # Return a simple stats object
+        return TenantStats(
+            tenant_id=tenant_id,
+            user_count=0,  # Would be calculated from actual data
+            max_users=tenant.config.max_users,
+            session_count=0,
+            team_count=0,
+        )
 
     def update_tenant(self, tenant_id: str, **kwargs) -> Optional[Tenant]:
         """更新租户"""

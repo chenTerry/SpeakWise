@@ -80,6 +80,32 @@ class LearningProfile:
     created_at: datetime = field(default_factory=datetime.utcnow)
     updated_at: datetime = field(default_factory=datetime.utcnow)
 
+    def get(self, key: str, default: Any = None) -> Any:
+        """Dict-like access for compatibility"""
+        if hasattr(self, key):
+            value = getattr(self, key)
+            # Convert enum to string for compatibility
+            if isinstance(value, Enum):
+                return value.value
+            return value
+        return default
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert to dictionary"""
+        return {
+            "user_id": self.user_id,
+            "skill_level": self.skill_level.value if isinstance(self.skill_level, Enum) else self.skill_level,
+            "learning_pattern": self.learning_pattern.value if isinstance(self.learning_pattern, Enum) else self.learning_pattern,
+            "total_sessions": self.total_sessions,
+            "total_hours": self.total_hours,
+            "avg_score": self.avg_score,
+            "strengths": [{"dimension": s.dimension, "score": s.score, "trend": s.trend} for s in self.strengths],
+            "weaknesses": [{"dimension": w.dimension, "score": w.score, "impact": w.impact} for w in self.weaknesses],
+            "insights": [{"title": i.title, "description": i.description} for i in self.insights],
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+            "updated_at": self.updated_at.isoformat() if self.updated_at else None,
+        }
+
 
 class LearningAnalytics:
     """

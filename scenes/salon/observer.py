@@ -68,6 +68,10 @@ class SalonObserverAgent(BaseAgent):
         self._action_items: List[str] = []
         self._quotes: List[Dict[str, str]] = []
 
+    def get_role(self) -> str:
+        """获取角色类型"""
+        return "observer"
+
     def initialize(self) -> bool:
         """
         初始化 Agent

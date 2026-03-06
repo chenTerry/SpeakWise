@@ -82,15 +82,17 @@ class Message:
 class DialogueContext:
     """
     对话上下文
-    
+
     保存对话历史和相关状态信息。
-    
+
     Attributes:
         messages: 消息历史列表
         metadata: 上下文元数据
+        session_id: 会话唯一标识
     """
     messages: List[Message] = field(default_factory=list)
     metadata: Dict[str, Any] = field(default_factory=dict)
+    session_id: str = field(default_factory=lambda: str(uuid.uuid4()))
     
     def add_message(self, message: Message) -> None:
         """添加消息到历史"""

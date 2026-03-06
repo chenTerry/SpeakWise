@@ -1,0 +1,26 @@
+{
+  "default": {
+    "id": "default",
+    "name": "默认配置 (Default)",
+    "created_at": 1772718068.8709335,
+    "input_language": "zh-CN",
+    "input_engine": "google",
+    "input_sample_rate": 16000,
+    "vad_aggressiveness": 2,
+    "output_engine": "pyttsx3",
+    "output_language": "zh-CN",
+    "output_voice_id": null,
+    "output_rate": 200,
+    "output_volume": 1.0,
+    "output_pitch": 50,
+    "noise_reduction": true,
+    "noise_reduction_level": "moderate",
+    "auto_normalize": false,
+    "default_speed": 1.0,
+    "auto_save_replays": true,
+    "show_waveform": true,
+    "show_transcript": true,
+    "theme": "default",
+    "metadata": {}
+  }
+}

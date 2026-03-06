@@ -116,6 +116,10 @@ class SalonAudienceAgent(BaseAgent):
             traits["practitioner"],
         )
 
+    def get_role(self) -> str:
+        """获取角色类型"""
+        return "audience"
+
     def initialize(self) -> bool:
         """
         初始化 Agent

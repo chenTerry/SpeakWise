@@ -398,3 +398,13 @@ class SalonSpeakerAgent(BaseAgent):
         self._presented_points.clear()
         self._questions_answered.clear()
         self.current_phase = "opening"
+
+    def get_role(self) -> str:
+        """获取角色描述"""
+        level_names = {
+            "beginner": "初级",
+            "intermediate": "中级",
+            "expert": "资深专家",
+        }
+        level_name = level_names.get(self.expertise_level, "专业")
+        return f"{level_name}演讲嘉宾，专注于'{self.topic}'主题分享"

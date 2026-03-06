@@ -134,14 +134,23 @@ class Team:
 class TeamManager:
     """团队管理器"""
 
-    def __init__(self, storage_path: str = "data/teams.json"):
-        self.storage_path = storage_path
+    def __init__(self, storage_path: str = "data/teams.json", db_path: Optional[str] = None):
+        # Support both storage_path and db_path for compatibility
+        if db_path:
+            if db_path == ":memory:":
+                self.storage_path = None  # In-memory mode
+            else:
+                self.storage_path = db_path
+        else:
+            self.storage_path = storage_path
         self._teams: Dict[str, Team] = {}
         self._members: Dict[str, Dict[str, TeamMember]] = {}  # team_id -> {user_id: member}
         self._load()
 
     def _load(self):
         """加载团队数据"""
+        if not self.storage_path:
+            return  # In-memory mode
         try:
             import os
             if os.path.exists(self.storage_path):
@@ -164,6 +173,8 @@ class TeamManager:
 
     def _save(self):
         """保存团队数据"""
+        if not self.storage_path:
+            return  # In-memory mode
         import os
         os.makedirs(os.path.dirname(self.storage_path), exist_ok=True)
         data = {
@@ -312,6 +323,12 @@ class TeamManager:
         if team_id not in self._members:
             return []
         return list(self._members[team_id].values())
+
+    def get_team_size(self, team_id: str) -> int:
+        """获取团队成员数量"""
+        if team_id not in self._members:
+            return 0
+        return len(self._members[team_id])
 
     def update_member_role(
         self,

@@ -161,6 +161,21 @@ class CollaborationManager:
         self._save()
         return session
 
+    def create_practice_session(
+        self,
+        team_id: str,
+        topic: str,
+        max_participants: int = 10,
+    ) -> CollaborationSession:
+        """创建练习会话（便捷方法）"""
+        return self.create_session(
+            team_id=team_id,
+            session_type=SessionType.PRACTICE,
+            name=topic,
+            description=f"练习会话：{topic}",
+            participants=[],
+        )
+
     def get_session(self, session_id: str) -> Optional[CollaborationSession]:
         """获取会话"""
         return self._sessions.get(session_id)

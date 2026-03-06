@@ -630,11 +630,12 @@ def demo_enterprise_features(quick_mode: bool = False):
         tenant_manager = TenantManager(db_path=":memory:")
         
         # 创建租户
-        tenant_id = tenant_manager.create_tenant(
+        tenant = tenant_manager.create_tenant(
             name="演示企业",
             plan="enterprise",
             max_users=100,
         )
+        tenant_id = tenant.id  # Get the ID string from Tenant object
         demo_success(f"租户创建成功 - ID: {tenant_id}")
         
         # 获取租户统计
@@ -648,11 +649,12 @@ def demo_enterprise_features(quick_mode: bool = False):
         team_manager = TeamManager(db_path=":memory:")
         
         # 创建团队
-        team_id = team_manager.create_team(
+        team = team_manager.create_team(
             tenant_id=tenant_id,
             name="研发团队",
             description="前端和后端开发团队",
         )
+        team_id = team.id  # Get the ID string from Team object
         demo_success(f"团队创建成功 - ID: {team_id}")
         
         # 添加成员

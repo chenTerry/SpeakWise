@@ -59,9 +59,17 @@ class AdminDashboard:
 
     def __init__(
         self,
-        tenant_manager: "TenantManager",
-        team_manager: "TeamManager",
+        tenant_manager: Optional["TenantManager"] = None,
+        team_manager: Optional["TeamManager"] = None,
     ):
+        # Create default managers if not provided
+        if tenant_manager is None:
+            from .tenant import TenantManager
+            tenant_manager = TenantManager(db_path=":memory:")
+        if team_manager is None:
+            from .team import TeamManager
+            team_manager = TeamManager(db_path=":memory:")
+        
         self.tenant_manager = tenant_manager
         self.team_manager = team_manager
         self.console = Console()
@@ -255,6 +263,18 @@ class AdminDashboard:
             expiring_trials=tenant_stats.get("expiring_soon", 0),
             system_health="healthy",
         )
+
+    def get_dashboard_data(self, tenant_id: Optional[str] = None) -> Dict[str, Any]:
+        """获取仪表盘数据"""
+        stats = self.get_stats()
+        return {
+            "total_sessions": stats.total_sessions,
+            "active_users": stats.total_users,
+            "average_score": 0.0,
+            "total_tenants": stats.total_tenants,
+            "total_teams": stats.total_teams,
+            "system_health": stats.system_health,
+        }
 
     def show_tenant_detail(self, tenant_id: str):
         """显示租户详情"""
