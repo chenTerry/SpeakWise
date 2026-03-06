@@ -171,12 +171,24 @@ class WebApplication:
         """
         import uvicorn
 
-        uvicorn.run(
-            self.app,
-            host=host or self.config.host,
-            port=port or self.config.port,
-            reload=reload if reload is not None else self.config.reload,
-        )
+        effective_reload = reload if reload is not None else self.config.reload
+        effective_host = host or self.config.host
+        effective_port = port or self.config.port
+
+        # When reload is enabled, uvicorn requires an import string instead of an app object
+        if effective_reload:
+            uvicorn.run(
+                "web.app:app",
+                host=effective_host,
+                port=effective_port,
+                reload=True,
+            )
+        else:
+            uvicorn.run(
+                self.app,
+                host=effective_host,
+                port=effective_port,
+            )
 
 
 # 创建全局应用实例

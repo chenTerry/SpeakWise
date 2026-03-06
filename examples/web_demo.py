@@ -37,21 +37,22 @@ def demo_basic():
     print()
     print("访问地址:")
     print("  http://127.0.0.1:8000")
+    print("  http://<your-ip>:8000")
     print()
     print("API 文档:")
     print("  http://127.0.0.1:8000/docs")
     print()
     print("按 Ctrl+C 停止服务器")
     print()
-    
-    # 创建并运行应用
+
+    # 创建并运行应用 (0.0.0.0 允许外部访问)
     config = WebConfig(
-        host="127.0.0.1",
+        host="0.0.0.0",
         port=8000,
         debug=True,
         reload=True,
     )
-    
+
     app = WebApplication(config=config)
     app.run()
 
@@ -167,8 +168,8 @@ if __name__ == "__main__":
     parser.add_argument(
         "--host",
         type=str,
-        default="127.0.0.1",
-        help="服务器主机 (默认：127.0.0.1)",
+        default="0.0.0.0",
+        help="服务器主机 (默认：0.0.0.0，允许外部访问)",
     )
     
     args = parser.parse_args()
@@ -191,10 +192,11 @@ if __name__ == "__main__":
         print(f"启动 Web 服务器...")
         print()
         print(f"访问地址:")
-        print(f"  http://{args.host}:{args.port}")
+        print(f"  http://127.0.0.1:{args.port}")
+        print(f"  http://<your-ip>:{args.port}")
         print()
         print(f"API 文档:")
-        print(f"  http://{args.host}:{args.port}/docs")
+        print(f"  http://127.0.0.1:{args.port}/docs")
         print()
         print("按 Ctrl+C 停止服务器")
         print()

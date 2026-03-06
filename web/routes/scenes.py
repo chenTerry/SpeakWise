@@ -28,7 +28,7 @@ class SceneInfo(BaseModel):
 
 class SceneConfig(BaseModel):
     """场景配置"""
-    scene_id: str
+    scene_id: Optional[str] = None  # Optional since it's provided in URL path
     style: Optional[str] = None
     difficulty: Optional[int] = None
     custom_settings: Dict[str, Any] = Field(default_factory=dict)
