@@ -446,7 +446,7 @@ class SalonScene(BaseScene):
     def _is_ready(self) -> bool:
         """检查场景是否就绪"""
         return (
-            self.state == SceneState.INITIALIZED
+            self.state in (SceneState.INITIALIZED, SceneState.RUNNING)
             and self._host_agent is not None
             and self._speaker_agent is not None
         )
