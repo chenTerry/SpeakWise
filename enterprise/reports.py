@@ -112,6 +112,14 @@ class EnterpriseReport:
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "EnterpriseReport":
         """从字典创建"""
+        if "created_at" in data and isinstance(data["created_at"], str):
+            data["created_at"] = datetime.fromisoformat(data["created_at"])
+        if "completed_at" in data and isinstance(data["completed_at"], str):
+            data["completed_at"] = datetime.fromisoformat(data["completed_at"])
+        if "period_start" in data and isinstance(data["period_start"], str):
+            data["period_start"] = datetime.fromisoformat(data["period_start"])
+        if "period_end" in data and isinstance(data["period_end"], str):
+            data["period_end"] = datetime.fromisoformat(data["period_end"])
         return cls(**data)
 
 

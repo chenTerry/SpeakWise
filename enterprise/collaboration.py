@@ -101,6 +101,12 @@ class CollaborationSession:
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "CollaborationSession":
         """从字典创建"""
+        if "scheduled_at" in data and isinstance(data["scheduled_at"], str):
+            data["scheduled_at"] = datetime.fromisoformat(data["scheduled_at"])
+        if "started_at" in data and isinstance(data["started_at"], str):
+            data["started_at"] = datetime.fromisoformat(data["started_at"])
+        if "ended_at" in data and isinstance(data["ended_at"], str):
+            data["ended_at"] = datetime.fromisoformat(data["ended_at"])
         return cls(**data)
 
 

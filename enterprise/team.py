@@ -70,6 +70,8 @@ class TeamMember:
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "TeamMember":
         """从字典创建"""
+        if "joined_at" in data and isinstance(data["joined_at"], str):
+            data["joined_at"] = datetime.fromisoformat(data["joined_at"])
         return cls(**data)
 
 
@@ -128,6 +130,10 @@ class Team:
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "Team":
         """从字典创建"""
+        if "created_at" in data and isinstance(data["created_at"], str):
+            data["created_at"] = datetime.fromisoformat(data["created_at"])
+        if "updated_at" in data and isinstance(data["updated_at"], str):
+            data["updated_at"] = datetime.fromisoformat(data["updated_at"])
         return cls(**data)
 
 

@@ -14,7 +14,11 @@ Version: v0.9.0
 """
 
 import sys
+import os
 from datetime import datetime, timedelta
+
+# Add project root to path for imports
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # 导入企业版模块
 from enterprise import (

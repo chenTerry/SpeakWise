@@ -157,6 +157,15 @@ class Tenant:
         """从字典创建"""
         config_data = data.pop("config", {})
         data["config"] = TenantConfig(**config_data) if config_data else TenantConfig()
+
+        # Convert datetime strings back to datetime objects
+        if "created_at" in data and isinstance(data["created_at"], str):
+            data["created_at"] = datetime.fromisoformat(data["created_at"])
+        if "updated_at" in data and isinstance(data["updated_at"], str):
+            data["updated_at"] = datetime.fromisoformat(data["updated_at"])
+        if "expires_at" in data and isinstance(data["expires_at"], str):
+            data["expires_at"] = datetime.fromisoformat(data["expires_at"])
+
         return cls(**data)
 
 
