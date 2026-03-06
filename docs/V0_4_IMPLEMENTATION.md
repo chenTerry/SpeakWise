@@ -388,5 +388,5 @@ ls web/templates/
 ---
 
 **版本：** v0.4.0  
-**更新日期：** 2024-03-31  
+**更新日期：** 2026-03-31  
 **作者：** AgentScope AI Interview Team

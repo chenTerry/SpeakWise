@@ -9,16 +9,16 @@
 ## 📋 目录
 
 - [v1.0.0 (2026-03-04)](#v100-2026-03-04)
-- [v0.9.0 (2024-05-05)](#v090-2024-05-05)
-- [v0.8.0 (2024-04-28)](#v080-2024-04-28)
-- [v0.7.0 (2024-04-21)](#v070-2024-04-21)
-- [v0.6.0 (2024-04-14)](#v060-2024-04-14)
-- [v0.5.0 (2024-04-07)](#v050-2024-04-07)
-- [v0.4.0 (2024-03-31)](#v040-2024-03-31)
-- [v0.3.0 (2024-03-24)](#v030-2024-03-24)
-- [v0.2.0 (2024-03-17)](#v020-2024-03-17)
-- [v0.1.1 (2024-03-10)](#v011-2024-03-10)
-- [v0.1.0 (2024-03-10)](#v010-2024-03-10)
+- [v0.9.0 (2026-05-05)](#v090-2026-05-05)
+- [v0.8.0 (2026-04-28)](#v080-2026-04-28)
+- [v0.7.0 (2026-04-21)](#v070-2026-04-21)
+- [v0.6.0 (2026-04-14)](#v060-2026-04-14)
+- [v0.5.0 (2026-04-07)](#v050-2026-04-07)
+- [v0.4.0 (2026-03-31)](#v040-2026-03-31)
+- [v0.3.0 (2026-03-24)](#v030-2026-03-24)
+- [v0.2.0 (2026-03-17)](#v020-2026-03-17)
+- [v0.1.1 (2026-03-10)](#v011-2026-03-10)
+- [v0.1.0 (2026-03-10)](#v010-2026-03-10)
 
 ---
 
@@ -113,7 +113,7 @@ chore(deps): 更新依赖版本
 
 ---
 
-## [v0.9.0](https://github.com/your-org/agentscope_ai_interview/releases/tag/v0.9.0) - 2024-05-05
+## [v0.9.0](https://github.com/your-org/agentscope_ai_interview/releases/tag/v0.9.0) - 2026-05-05
 
 ### 🏢 企业版功能
 
@@ -203,7 +203,7 @@ docs(enterprise): 添加企业版文档
 
 ---
 
-## [v0.8.0](https://github.com/your-org/agentscope_ai_interview/releases/tag/v0.8.0) - 2024-04-28
+## [v0.8.0](https://github.com/your-org/agentscope_ai_interview/releases/tag/v0.8.0) - 2026-04-28
 
 ### 🎤 语音支持模块
 
@@ -290,7 +290,7 @@ test(voice): 添加语音功能测试
 
 ---
 
-## [v0.7.0](https://github.com/your-org/agentscope_ai_interview/releases/tag/v0.7.0) - 2024-04-21
+## [v0.7.0](https://github.com/your-org/agentscope_ai_interview/releases/tag/v0.7.0) - 2026-04-21
 
 ### 📊 数据追踪与分析报告
 
@@ -384,7 +384,7 @@ test(analytics): 添加数据分析测试
 
 ---
 
-## [v0.6.0](https://github.com/your-org/agentscope_ai_interview/releases/tag/v0.6.0) - 2024-04-14
+## [v0.6.0](https://github.com/your-org/agentscope_ai_interview/releases/tag/v0.6.0) - 2026-04-14
 
 ### 👤 用户系统与进度追踪
 
@@ -475,7 +475,7 @@ docs(users): 添加用户系统文档
 
 ---
 
-## [v0.5.0](https://github.com/your-org/agentscope_ai_interview/releases/tag/v0.5.0) - 2024-04-07
+## [v0.5.0](https://github.com/your-org/agentscope_ai_interview/releases/tag/v0.5.0) - 2026-04-07
 
 ### 🎭 多场景支持
 
@@ -557,7 +557,7 @@ docs(scene): 添加多场景文档
 
 ---
 
-## [v0.4.0](https://github.com/your-org/agentscope_ai_interview/releases/tag/v0.4.0) - 2024-03-31
+## [v0.4.0](https://github.com/your-org/agentscope_ai_interview/releases/tag/v0.4.0) - 2026-03-31
 
 ### 💻 用户界面
 
@@ -647,7 +647,7 @@ test(ui): 添加 UI 测试
 
 ---
 
-## [v0.3.0](https://github.com/your-org/agentscope_ai_interview/releases/tag/v0.3.0) - 2024-03-24
+## [v0.3.0](https://github.com/your-org/agentscope_ai_interview/releases/tag/v0.3.0) - 2026-03-24
 
 ### 🧠 智能反馈系统
 
@@ -722,7 +722,7 @@ docs(evaluation): 添加评估系统文档
 
 ---
 
-## [v0.2.0](https://github.com/your-org/agentscope_ai_interview/releases/tag/v0.2.0) - 2024-03-17
+## [v0.2.0](https://github.com/your-org/agentscope_ai_interview/releases/tag/v0.2.0) - 2026-03-17
 
 ### 🎯 基础面试场景
 
@@ -797,7 +797,7 @@ docs(scene): 添加面试场景文档
 
 ---
 
-## [v0.1.1](https://github.com/your-org/agentscope_ai_interview/releases/tag/v0.1.1) - 2024-03-10
+## [v0.1.1](https://github.com/your-org/agentscope_ai_interview/releases/tag/v0.1.1) - 2026-03-10
 
 ### 🐛 Bug 修复
 
@@ -825,7 +825,7 @@ fix(core): DialogueManager fix, version 0.1.1
 
 ---
 
-## [v0.1.0](https://github.com/your-org/agentscope_ai_interview/releases/tag/v0.1.0) - 2024-03-10
+## [v0.1.0](https://github.com/your-org/agentscope_ai_interview/releases/tag/v0.1.0) - 2026-03-10
 
 ### 🏗️ 核心框架搭建
 
@@ -903,16 +903,16 @@ docs(readme): 添加 README.md
 | 版本 | 发布日期 | 主题 | 新增文件 | 代码行数 | 测试覆盖 |
 |------|----------|------|----------|----------|----------|
 | v1.0.0 | 2026-03-04 | Production Ready | 50+ | 5,000+ | 85%+ |
-| v0.9.0 | 2024-05-05 | Enterprise Ready | 18 | 3,500 | 82% |
-| v0.8.0 | 2024-04-28 | Voice Interaction | 20 | 4,000 | 80% |
-| v0.7.0 | 2024-04-21 | Analytics | 15 | 2,800 | 78% |
-| v0.6.0 | 2024-04-14 | User Management | 22 | 3,500 | 75% |
-| v0.5.0 | 2024-04-07 | Multi-Scene | 18 | 2,500 | 72% |
-| v0.4.0 | 2024-03-31 | UI | 25 | 3,000 | 70% |
-| v0.3.0 | 2024-03-24 | Feedback | 8 | 1,200 | 65% |
-| v0.2.0 | 2024-03-17 | MVP | 12 | 1,500 | 60% |
-| v0.1.1 | 2024-03-10 | Bug Fix | - | - | - |
-| v0.1.0 | 2024-03-10 | Foundation | 5 | 500 | - |
+| v0.9.0 | 2026-05-05 | Enterprise Ready | 18 | 3,500 | 82% |
+| v0.8.0 | 2026-04-28 | Voice Interaction | 20 | 4,000 | 80% |
+| v0.7.0 | 2026-04-21 | Analytics | 15 | 2,800 | 78% |
+| v0.6.0 | 2026-04-14 | User Management | 22 | 3,500 | 75% |
+| v0.5.0 | 2026-04-07 | Multi-Scene | 18 | 2,500 | 72% |
+| v0.4.0 | 2026-03-31 | UI | 25 | 3,000 | 70% |
+| v0.3.0 | 2026-03-24 | Feedback | 8 | 1,200 | 65% |
+| v0.2.0 | 2026-03-17 | MVP | 12 | 1,500 | 60% |
+| v0.1.1 | 2026-03-10 | Bug Fix | - | - | - |
+| v0.1.0 | 2026-03-10 | Foundation | 5 | 500 | - |
 
 ---
 
