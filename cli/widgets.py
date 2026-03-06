@@ -342,7 +342,7 @@ class TypingIndicator(UIWidget):
         if console is None:
             console = Console()
         return Live(
-            self.render,
+            get_renderable=self.render,
             console=console,
             refresh_per_second=refresh_per_second,
             transient=True,

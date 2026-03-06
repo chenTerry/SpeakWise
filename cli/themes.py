@@ -100,7 +100,8 @@ class Theme:
             Rich Style 对象
         """
         color = getattr(self, name, self.text)
-        return Style(color=color)
+        # Handle style strings like "dim white" by parsing them
+        return Style.parse(color) if " " in color else Style(color=color)
 
 
 class ThemeManager:
