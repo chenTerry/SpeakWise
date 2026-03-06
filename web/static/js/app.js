@@ -85,6 +85,9 @@ const API = {
         get(evaluationId) {
             return API.request(`/feedback/${evaluationId}`);
         },
+        getReport(evaluationId) {
+            return API.request(`/feedback/${evaluationId}/report`);
+        },
         getSessionFeedback(sessionId) {
             return API.request(`/feedback/session/${sessionId}`);
         },
@@ -572,7 +575,7 @@ const FeedbackPage = {
         UI.showLoading(container, '加载评估报告...');
         
         try {
-            const report = await API.feedback.getSessionFeedback(AppState.currentSession?.id || '');
+            const report = await API.feedback.getReport(this.evaluationId);
             this.renderFeedback(report);
         } catch (error) {
             UI.showError(container, `加载失败：${error.message}`);

@@ -205,6 +205,39 @@ async def get_feedback(evaluation_id: str) -> EvaluationResult:
     return evaluation
 
 
+@router.get("/{evaluation_id}/report", response_model=FeedbackReport)
+async def get_feedback_report(evaluation_id: str) -> FeedbackReport:
+    """获取评估报告（包含图表数据）"""
+    evaluation = get_evaluation(evaluation_id)
+    if not evaluation:
+        raise HTTPException(status_code=404, detail="评估结果不存在")
+
+    # 生成图表数据
+    charts_data = {
+        "radar": {
+            "labels": [d.name for d in evaluation.dimensions],
+            "scores": [d.score for d in evaluation.dimensions],
+            "max_score": 5.0,
+        },
+        "bar": {
+            "labels": [d.name for d in evaluation.dimensions],
+            "scores": [d.score for d in evaluation.dimensions],
+            "weights": [d.weight for d in evaluation.dimensions],
+        },
+        "gauge": {
+            "value": evaluation.overall_score,
+            "max": 5.0,
+            "rating": evaluation.rating,
+        },
+    }
+
+    return FeedbackReport(
+        evaluation=evaluation,
+        scene_info={"name": "面试场景", "id": evaluation.session_id},
+        charts_data=charts_data,
+    )
+
+
 @router.get("/session/{session_id}", response_model=FeedbackReport)
 async def get_session_feedback(session_id: str) -> FeedbackReport:
     """获取会话的反馈报告"""
