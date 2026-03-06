@@ -339,7 +339,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--config",
         type=str,
-        help="配置文件路径",
+        default="config.yaml",
+        help="配置文件路径 (默认: config.yaml)",
     )
 
     return parser.parse_args()

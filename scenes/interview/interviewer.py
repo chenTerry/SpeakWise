@@ -465,7 +465,7 @@ class EnhancedInterviewerAgent(BaseAgent):
         self.question_bank = question_bank or QuestionBank()
 
         # AgentScope 集成（可选）
-        self._model_agent = None
+        self._model = None
         self._use_agentscope = False
 
         # 状态跟踪
@@ -484,24 +484,55 @@ class EnhancedInterviewerAgent(BaseAgent):
             self._use_agentscope = False
 
     def _init_agentscope(self) -> None:
-        """初始化 AgentScope ModelAgent"""
+        """初始化 AgentScope ChatModel (v1.0.16+ API)"""
         try:
             import agentscope
-            from agentscope.agents import ModelAgent
+            from agentscope.model import OpenAIChatModel, DashScopeChatModel
 
-            # 检查是否已初始化
-            if not agentscope.initialized:
-                agentscope.init(
-                    model_configs=self.config.get("agentscope.model_configs"),
+            # 初始化 AgentScope
+            agentscope.init()
+
+            # 获取模型配置
+            model_name = self.config.get("model.name", "qwen-plus")
+            model_provider = self.config.get("model.provider", "dashscope")
+            temperature = self.config.get("model.temperature", 0.7)
+
+            # 根据提供商创建对应的模型
+            if model_provider == "openai":
+                self._model = OpenAIChatModel(
+                    model_name=model_name,
+                    generate_kwargs={"temperature": temperature},
+                )
+            elif model_provider == "dashscope":
+                # 获取可选的 base URL
+                base_url = self.config.get("model.base_url")
+                
+                # 如果使用 OpenAI 兼容模式 URL，则使用 OpenAIChatModel
+                if base_url and "compatible-mode" in base_url:
+                    self._model = OpenAIChatModel(
+                        model_name=model_name,
+                        api_key=self.config.get("model.api_key"),
+                        stream=False,
+                        client_kwargs={"base_url": base_url},
+                        generate_kwargs={"temperature": temperature},
+                    )
+                else:
+                    self._model = DashScopeChatModel(
+                        model_name=model_name,
+                        api_key=self.config.get("model.api_key"),
+                        stream=False,
+                        base_http_api_url=base_url if base_url else None,
+                        generate_kwargs={"temperature": temperature},
+                    )
+            else:
+                # 默认使用 OpenAI 兼容模式（支持 DeepSeek 等）
+                self._model = OpenAIChatModel(
+                    model_name=model_name,
+                    generate_kwargs={"temperature": temperature},
                 )
 
-            self._model_agent = ModelAgent(
-                name="InterviewModel",
-                model_name=self.config.get("model.name", "deepseek-chat"),
-                temperature=self.config.get("model.temperature", 0.7),
-            )
             self._use_agentscope = True
-            logger.info("AgentScope ModelAgent 初始化成功")
+            logger.info(f"AgentScope ChatModel 初始化成功: {model_name}")
 
         except ImportError:
             logger.info("AgentScope 未安装，使用内置问题生成")
@@ -663,7 +694,7 @@ class EnhancedInterviewerAgent(BaseAgent):
             追问字符串
         """
         # 尝试使用 AgentScope 生成智能追问
-        if self._use_agentscope and self._model_agent:
+        if self._use_agentscope and self._model:
             return self._generate_agentscope_followup(answer, history)
 
         # 备用方案：基于规则的追问
@@ -782,24 +813,85 @@ class EnhancedInterviewerAgent(BaseAgent):
         answer: str,
         history: Optional[List[Message]],
     ) -> str:
-        """使用 AgentScope 生成追问"""
-        if not self._model_agent:
+        """使用 AgentScope ChatModel 生成追问 (v1.0.16+ API)"""
+        if not self._model:
             return self._generate_rule_based_followup(answer, history)
 
         try:
+            import asyncio
+
             # 构建提示词
             prompt = self._build_followup_prompt(answer, history)
 
-            # 调用 ModelAgent
-            response = self._model_agent(prompt)
+            # 调用 ChatModel (v1.0.16+ API) - 异步方法需要用 asyncio.run
+            messages = [{"role": "user", "content": prompt}]
+            
+            # 尝试获取当前事件循环
+            try:
+                loop = asyncio.get_running_loop()
+                # 如果已有事件循环，创建任务
+                import concurrent.futures
+                with concurrent.futures.ThreadPoolExecutor() as executor:
+                    future = executor.submit(asyncio.run, self._async_call_model(messages))
+                    response = future.result()
+            except RuntimeError:
+                # 没有运行中的事件循环，直接使用 asyncio.run
+                response = asyncio.run(self._async_call_model(messages))
 
-            if isinstance(response, dict):
-                return response.get("content", str(response))
-            return str(response)
+            # 提取响应内容
+            return self._extract_response_content(response)
 
         except Exception as e:
             logger.error(f"AgentScope 追问生成失败：{e}")
             return self._generate_rule_based_followup(answer, history)
+
+    async def _async_call_model(self, messages: list) -> any:
+        """异步调用模型"""
+        return await self._model(messages)
+
+    def _extract_response_content(self, response) -> str:
+        """从响应中提取内容"""
+        # 处理 ChatResponse 对象 (AgentScope v1.0.16+)
+        if hasattr(response, 'content'):
+            content = response.content
+            # content 可能是列表 [{'type': 'text', 'text': '...'}]
+            if isinstance(content, list) and len(content) > 0:
+                first_item = content[0]
+                if isinstance(first_item, dict) and 'text' in first_item:
+                    return first_item['text']
+                elif hasattr(first_item, 'text'):
+                    return first_item.text
+            elif isinstance(content, str):
+                return content
+            return str(content)
+        
+        # 处理列表格式 [{'type': 'text', 'text': '...'}]
+        if isinstance(response, list) and len(response) > 0:
+            first_item = response[0]
+            if isinstance(first_item, dict) and 'text' in first_item:
+                return first_item['text']
+            elif hasattr(first_item, 'text'):
+                return first_item.text
+        
+        # 处理其他对象属性
+        if hasattr(response, 'text'):
+            return response.text
+        elif hasattr(response, 'choices') and response.choices:
+            # OpenAI 格式响应
+            choice = response.choices[0]
+            if hasattr(choice, 'message'):
+                return choice.message.content
+            return str(choice)
+        elif isinstance(response, dict):
+            if 'choices' in response:
+                choices = response['choices']
+                if choices and 'message' in choices[0]:
+                    return choices[0]['message'].get('content', str(response))
+            if 'text' in response:
+                return response['text']
+            if 'content' in response:
+                return response['content']
+        return str(response)
 
     def _generate_rule_based_followup(
         self,
