@@ -205,10 +205,18 @@ class UserService:
                 user_id=user.id,
                 username=user.username
             )
-            
-            # Return token string for backward compatibility
-            return token
-    
+
+            return {
+                "token": token,
+                "session_id": session_id,
+                "user": {
+                    "id": user.id,
+                    "username": user.username,
+                    "display_name": user.display_name,
+                    "email": user.email,
+                }
+            }
+
     def logout(self, session_id: str) -> bool:
         """
         用户登出
@@ -391,7 +399,7 @@ class UserService:
                 scene_id=session_record.scene_id,
                 title=session_record.title,
                 status=session_record.status,
-                metadata=session_record.metadata or {},
+                metadata=session_record.extra_data or {},
                 started_at=session_record.started_at,
                 ended_at=session_record.ended_at,
                 duration_seconds=session_record.duration_seconds
@@ -421,7 +429,7 @@ class UserService:
                 scene_id=session_record.scene_id,
                 title=session_record.title,
                 status=session_record.status,
-                metadata=session_record.metadata or {},
+                metadata=session_record.extra_data or {},
                 started_at=session_record.started_at,
                 ended_at=session_record.ended_at,
                 duration_seconds=session_record.duration_seconds
@@ -453,7 +461,7 @@ class UserService:
                     scene_id=s.scene_id,
                     title=s.title,
                     status=s.status,
-                    metadata=s.metadata or {},
+                    metadata=s.extra_data or {},
                     started_at=s.started_at,
                     ended_at=s.ended_at,
                     duration_seconds=s.duration_seconds
@@ -498,7 +506,7 @@ class UserService:
                 scene_id=session_record.scene_id,
                 title=session_record.title,
                 status=session_record.status,
-                metadata=session_record.metadata or {},
+                metadata=session_record.extra_data or {},
                 started_at=session_record.started_at,
                 ended_at=session_record.ended_at,
                 duration_seconds=session_record.duration_seconds

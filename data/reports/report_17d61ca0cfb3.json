@@ -1,0 +1,73 @@
+{
+  "id": "report_17d61ca0cfb3",
+  "report_type": "tenant_summary",
+  "tenant_id": "tenant_3272d76627d7",
+  "title": "Monthly Tenant Summary",
+  "description": null,
+  "format": "json",
+  "status": "completed",
+  "created_at": "2026-03-06T03:55:41.217088",
+  "completed_at": "2026-03-06T03:55:41.217146",
+  "period_start": "2026-02-04T03:55:41.217078",
+  "period_end": "2026-03-06T03:55:41.217078",
+  "filters": {},
+  "data": {
+    "tenant_info": {
+      "id": "tenant_3272d76627d7",
+      "name": "Acme Corporation",
+      "status": "trial",
+      "plan": "professional",
+      "config": {
+        "max_users": 100,
+        "max_teams": 10,
+        "max_sessions_per_month": 1000,
+        "enable_sso": false,
+        "enable_custom_branding": false,
+        "enable_advanced_analytics": false,
+        "data_retention_days": 365,
+        "allowed_scenes": [
+          "interview",
+          "meeting",
+          "salon"
+        ],
+        "custom_settings": {}
+      },
+      "created_at": "2026-03-06T03:53:51.275533",
+      "updated_at": "2026-03-06T03:53:51.275534",
+      "expires_at": "2026-04-05T03:53:51.275511",
+      "contact_email": "admin@acme.com",
+      "contact_phone": null,
+      "address": null,
+      "metadata": {}
+    },
+    "statistics": {
+      "total_tenants": 4,
+      "by_status": {
+        "active": 0,
+        "suspended": 0,
+        "inactive": 0,
+        "trial": 4
+      },
+      "by_plan": {
+        "free": 0,
+        "trial": 0,
+        "basic": 0,
+        "professional": 2,
+        "enterprise": 2
+      },
+      "active_trials": 4,
+      "expiring_soon": 0
+    },
+    "period": {
+      "start": "2026-02-04T03:55:41.217078",
+      "end": "2026-03-06T03:55:41.217078"
+    }
+  },
+  "summary": {
+    "generated_at": "2026-03-06T03:55:41.217131",
+    "data_points": 932
+  },
+  "file_path": null,
+  "file_size_bytes": 0,
+  "metadata": {}
+}

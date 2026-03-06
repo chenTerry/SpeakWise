@@ -1,0 +1,154 @@
+[
+  {
+    "id": "session_bb0ba2b3efbf",
+    "team_id": "team_ef12f6c81395",
+    "session_type": "training",
+    "status": "completed",
+    "name": "Interview Practice Session",
+    "description": "Group interview practice",
+    "scheduled_at": null,
+    "started_at": "2026-03-06T03:51:12.384891",
+    "ended_at": "2026-03-06T03:51:12.397687",
+    "participants": [
+      "user_001",
+      "user_002",
+      "user_003"
+    ],
+    "observers": [],
+    "scene": "interview",
+    "scene_config": {},
+    "results": {
+      "average_score": 85.5,
+      "completion_rate": 100,
+      "feedback": "Great job everyone!"
+    },
+    "recording_url": null,
+    "chat_history": [
+      {
+        "user_id": "user_001",
+        "message": "大家好，开始练习吧！",
+        "timestamp": "2026-03-06T03:51:12.388995"
+      },
+      {
+        "user_id": "user_002",
+        "message": "好的，我准备好了！",
+        "timestamp": "2026-03-06T03:51:12.393511"
+      }
+    ],
+    "metadata": {}
+  },
+  {
+    "id": "session_91f9bc1616ff",
+    "team_id": "team_ef12f6c81395",
+    "session_type": "training",
+    "status": "completed",
+    "name": "Interview Practice Session",
+    "description": "Group interview practice",
+    "scheduled_at": null,
+    "started_at": "2026-03-06T03:53:51.320174",
+    "ended_at": "2026-03-06T03:53:51.334296",
+    "participants": [
+      "user_001",
+      "user_002",
+      "user_003"
+    ],
+    "observers": [],
+    "scene": "interview",
+    "scene_config": {},
+    "results": {
+      "average_score": 85.5,
+      "completion_rate": 100,
+      "feedback": "Great job everyone!"
+    },
+    "recording_url": null,
+    "chat_history": [
+      {
+        "user_id": "user_001",
+        "message": "大家好，开始练习吧！",
+        "timestamp": "2026-03-06T03:53:51.324932"
+      },
+      {
+        "user_id": "user_002",
+        "message": "好的，我准备好了！",
+        "timestamp": "2026-03-06T03:53:51.329596"
+      }
+    ],
+    "metadata": {}
+  },
+  {
+    "id": "session_35144eb20b16",
+    "team_id": "team_ef12f6c81395",
+    "session_type": "training",
+    "status": "completed",
+    "name": "Interview Practice Session",
+    "description": "Group interview practice",
+    "scheduled_at": null,
+    "started_at": "2026-03-06T03:55:41.176352",
+    "ended_at": "2026-03-06T03:55:41.190270",
+    "participants": [
+      "user_001",
+      "user_002",
+      "user_003"
+    ],
+    "observers": [],
+    "scene": "interview",
+    "scene_config": {},
+    "results": {
+      "average_score": 85.5,
+      "completion_rate": 100,
+      "feedback": "Great job everyone!"
+    },
+    "recording_url": null,
+    "chat_history": [
+      {
+        "user_id": "user_001",
+        "message": "大家好，开始练习吧！",
+        "timestamp": "2026-03-06T03:55:41.180929"
+      },
+      {
+        "user_id": "user_002",
+        "message": "好的，我准备好了！",
+        "timestamp": "2026-03-06T03:55:41.185630"
+      }
+    ],
+    "metadata": {}
+  },
+  {
+    "id": "session_4467bb54fa5f",
+    "team_id": "team_ef12f6c81395",
+    "session_type": "training",
+    "status": "completed",
+    "name": "Interview Practice Session",
+    "description": "Group interview practice",
+    "scheduled_at": null,
+    "started_at": "2026-03-06T05:54:47.700060",
+    "ended_at": "2026-03-06T05:54:47.712241",
+    "participants": [
+      "user_001",
+      "user_002",
+      "user_003"
+    ],
+    "observers": [],
+    "scene": "interview",
+    "scene_config": {},
+    "results": {
+      "average_score": 85.5,
+      "completion_rate": 100,
+      "feedback": "Great job everyone!"
+    },
+    "recording_url": null,
+    "chat_history": [
+      {
+        "user_id": "user_001",
+        "message": "大家好，开始练习吧！",
+        "timestamp": "2026-03-06T05:54:47.704236"
+      },
+      {
+        "user_id": "user_002",
+        "message": "好的，我准备好了！",
+        "timestamp": "2026-03-06T05:54:47.708231"
+      }
+    ],
+    "metadata": {}
+  }
+]

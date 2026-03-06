@@ -10,13 +10,14 @@ AgentScope AI Interview - Dashboard Module
 """
 
 from .cli_dashboard import CLIDashboard
-from .web_dashboard import WebDashboardRouter
+from .web_dashboard import create_dashboard_router, create_dashboard_app
 from .report import ReportGenerator
 
 __version__ = "0.6.0"
 
 __all__ = [
     "CLIDashboard",
-    "WebDashboardRouter",
+    "create_dashboard_router",
+    "create_dashboard_app",
     "ReportGenerator",
 ]

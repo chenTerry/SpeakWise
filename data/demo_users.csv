@@ -1,0 +1,5 @@
+email,name,role,department
+john@example.com,John Doe,member,Engineering
+jane@example.com,Jane Smith,admin,Product
+bob@example.com,Bob Johnson,member,Design
+alice@example.com,Alice Williams,member,Marketing

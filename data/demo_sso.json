@@ -1,0 +1,19 @@
+{
+  "configs": {
+    "demo_tenant": {
+      "oauth2": {
+        "client_id": "demo_client_id",
+        "authorization_url": "https://example.com/oauth/authorize",
+        "token_url": "https://example.com/oauth/token",
+        "userinfo_url": "https://example.com/oauth/userinfo",
+        "redirect_uri": "http://localhost:8000/admin/auth/callback",
+        "scope": "openid email profile",
+        "response_type": "code",
+        "grant_type": "authorization_code",
+        "pkce_enabled": true,
+        "client_secret_hash": "bd450bb4015437c1c1361b3641fb7dc8952f4cf9cf6c971b57017cfca75e5d22",
+        "enabled": true
+      }
+    }
+  }
+}

@@ -511,5 +511,24 @@
     "recording_url": null,
     "chat_history": [],
     "metadata": {}
+  },
+  {
+    "id": "session_ccbed316d353",
+    "team_id": "team_5ca9435db4b7",
+    "session_type": "practice",
+    "status": "scheduled",
+    "name": "技术面试练习",
+    "description": "练习会话：技术面试练习",
+    "scheduled_at": null,
+    "started_at": null,
+    "ended_at": null,
+    "participants": [],
+    "observers": [],
+    "scene": "interview",
+    "scene_config": {},
+    "results": {},
+    "recording_url": null,
+    "chat_history": [],
+    "metadata": {}
   }
 ]

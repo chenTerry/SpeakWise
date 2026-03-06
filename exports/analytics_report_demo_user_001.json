@@ -1,0 +1,303 @@
+{
+  "export_metadata": {
+    "exported_at": "2026-03-06T07:26:50.150756",
+    "version": "1.0",
+    "format": "json"
+  },
+  "data": {
+    "user_id": "demo_user_001",
+    "generated_at": "2026-03-06T07:26:50.149193",
+    "period_days": 60,
+    "key_insights": [
+      {
+        "insight_id": "insight_1",
+        "category": "performance",
+        "priority": "medium",
+        "title": "当前技能水平",
+        "description": "您目前的技能水平为中级",
+        "icon": "📊",
+        "metrics": {
+          "skill_level": "intermediate"
+        },
+        "trend": "neutral",
+        "actionable_items": [
+          "继续练习以提升水平",
+          "设定下一个水平目标"
+        ]
+      },
+      {
+        "insight_id": "insight_2",
+        "category": "behavior",
+        "priority": "medium",
+        "title": "稳定的学习习惯",
+        "description": "您的学习模式为稳定的学习习惯",
+        "icon": "📈",
+        "metrics": {
+          "learning_pattern": "consistent"
+        },
+        "trend": "positive",
+        "actionable_items": [
+          "继续保持规律的练习节奏"
+        ]
+      },
+      {
+        "insight_id": "insight_3",
+        "category": "behavior",
+        "priority": "medium",
+        "title": "中等参与度",
+        "description": "当前参与度：中等参与度",
+        "icon": "🔥",
+        "metrics": {
+          "engagement_level": "medium"
+        },
+        "trend": "neutral",
+        "actionable_items": [
+          "保持当前节奏，逐步提升"
+        ]
+      },
+      {
+        "insight_id": "insight_4",
+        "category": "recommendation",
+        "priority": "medium",
+        "title": "恢复练习",
+        "description": "练习中断了，加油恢复练习！",
+        "icon": "💪",
+        "metrics": {
+          "current_streak": 0
+        },
+        "trend": "neutral",
+        "actionable_items": [
+          "从今天开始重新练习",
+          "设定小目标重建习惯"
+        ]
+      },
+      {
+        "insight_id": "insight_5",
+        "category": "progress",
+        "priority": "medium",
+        "title": "持续进步中",
+        "description": "您的表现呈现上升趋势",
+        "icon": "📈",
+        "metrics": {
+          "trend": "upward"
+        },
+        "trend": "positive",
+        "actionable_items": [
+          "总结有效方法并坚持"
+        ]
+      },
+      {
+        "insight_id": "insight_6",
+        "category": "achievement",
+        "priority": "low",
+        "title": "练习统计",
+        "description": "已完成20次练习",
+        "icon": "📝",
+        "metrics": {
+          "total_sessions": 20
+        },
+        "trend": "neutral",
+        "actionable_items": [
+          "继续积累练习量"
+        ]
+      },
+      {
+        "insight_id": "insight_7",
+        "category": "achievement",
+        "priority": "low",
+        "title": "最佳表现",
+        "description": "最高得分81.8分",
+        "icon": "🌟",
+        "metrics": {
+          "best_score": 81.8
+        },
+        "trend": "positive",
+        "actionable_items": [
+          "回顾最佳表现的经验"
+        ]
+      }
+    ],
+    "performance_cards": [
+      {
+        "dimension": "communication_collaboration",
+        "dimension_name": "沟通协作能力",
+        "current_score": 82.5,
+        "previous_score": 72.6,
+        "change": 9.8,
+        "percentile": 50,
+        "level": "good",
+        "status": "improving",
+        "summary": "沟通协作能力: 82.5分 (↑9.8)"
+      },
+      {
+        "dimension": "problem_solving",
+        "dimension_name": "问题解决能力",
+        "current_score": 78.4,
+        "previous_score": 69.9,
+        "change": 8.6,
+        "percentile": 50,
+        "level": "good",
+        "status": "improving",
+        "summary": "问题解决能力: 78.4分 (↑8.6)"
+      },
+      {
+        "dimension": "language_expression",
+        "dimension_name": "语言表达能力",
+        "current_score": 77.0,
+        "previous_score": 66.0,
+        "change": 11.0,
+        "percentile": 50,
+        "level": "good",
+        "status": "improving",
+        "summary": "语言表达能力: 77.0分 (↑11.0)"
+      },
+      {
+        "dimension": "overall_quality",
+        "dimension_name": "综合素质",
+        "current_score": 76.4,
+        "previous_score": 67.2,
+        "change": 9.2,
+        "percentile": 47.59,
+        "level": "good",
+        "status": "improving",
+        "summary": "综合素质: 76.4分 (↑9.2)"
+      },
+      {
+        "dimension": "logical_thinking",
+        "dimension_name": "逻辑思维能力",
+        "current_score": 73.6,
+        "previous_score": 67.3,
+        "change": 6.3,
+        "percentile": 50,
+        "level": "average",
+        "status": "improving",
+        "summary": "逻辑思维能力: 73.6分 (↑6.3)"
+      },
+      {
+        "dimension": "professional_knowledge",
+        "dimension_name": "专业知识掌握",
+        "current_score": 73.5,
+        "previous_score": 62.8,
+        "change": 10.6,
+        "percentile": 50,
+        "level": "average",
+        "status": "improving",
+        "summary": "专业知识掌握: 73.5分 (↑10.6)"
+      },
+      {
+        "dimension": "adaptability",
+        "dimension_name": "应变能力",
+        "current_score": 73.2,
+        "previous_score": 64.2,
+        "change": 8.9,
+        "percentile": 50,
+        "level": "average",
+        "status": "improving",
+        "summary": "应变能力: 73.2分 (↑8.9)"
+      }
+    ],
+    "trend_analyses": [
+      {
+        "metric_name": "overall_quality",
+        "current_value": 80.2,
+        "previous_value": 71.31,
+        "change_value": 8.89,
+        "change_percent": 12.47,
+        "trend_direction": "upward",
+        "trend_strength": "strong",
+        "forecast_next": 84.64,
+        "confidence": 0.7
+      },
+      {
+        "metric_name": "language_expression",
+        "current_value": 79.0,
+        "previous_value": 71.16,
+        "change_value": 7.84,
+        "change_percent": 11.02,
+        "trend_direction": "upward",
+        "trend_strength": "strong",
+        "forecast_next": 82.92,
+        "confidence": 0.7
+      },
+      {
+        "metric_name": "logical_thinking",
+        "current_value": 75.4,
+        "previous_value": 70.18,
+        "change_value": 5.22,
+        "change_percent": 7.44,
+        "trend_direction": "upward",
+        "trend_strength": "strong",
+        "forecast_next": 78.01,
+        "confidence": 0.7
+      },
+      {
+        "metric_name": "problem_solving",
+        "current_value": 87.5,
+        "previous_value": 73.46,
+        "change_value": 14.04,
+        "change_percent": 19.12,
+        "trend_direction": "upward",
+        "trend_strength": "strong",
+        "forecast_next": 94.52,
+        "confidence": 0.7
+      }
+    ],
+    "recommendations": [
+      {
+        "rec_id": "rec_1",
+        "title": "专业知识梳理",
+        "description": "提升专业知识能力",
+        "priority": 3,
+        "estimated_impact": "medium",
+        "time_required_minutes": 15,
+        "steps": [
+          "选择专业知识梳理练习",
+          "专注练习 20 分钟",
+          "记录练习心得",
+          "回顾反馈并改进"
+        ],
+        "related_dimensions": [
+          "professional_knowledge"
+        ]
+      },
+      {
+        "rec_id": "rec_2",
+        "title": "压力应对训练",
+        "description": "提升应变能力能力",
+        "priority": 3,
+        "estimated_impact": "medium",
+        "time_required_minutes": 15,
+        "steps": [
+          "选择压力应对训练练习",
+          "专注练习 20 分钟",
+          "记录练习心得",
+          "回顾反馈并改进"
+        ],
+        "related_dimensions": [
+          "adaptability"
+        ]
+      }
+    ],
+    "achievements": [
+      {
+        "achievement_id": "first_session",
+        "name": "初次尝试",
+        "description": "完成第一次练习",
+        "icon": "🎯",
+        "unlocked_at": "2026-01-24T23:39:28.509294",
+        "category": "milestone",
+        "progress": 100.0
+      },
+      {
+        "achievement_id": "dedicated",
+        "name": "勤奋学习",
+        "description": "累计练习超过 10 小时",
+        "icon": "⏰",
+        "unlocked_at": "2026-03-06T07:26:50.149183",
+        "category": "dedication",
+        "progress": 100.0
+      }
+    ],
+    "summary_text": "恭喜您获得了2个成就！ 当前综合表现：76.4分，继续加油。 有3个积极进展。"
+  }
+}

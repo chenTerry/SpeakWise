@@ -192,8 +192,8 @@ class SessionReplay:
                     self.evaluation_result = {}
             
             # 解析笔记（从 metadata 中）
-            if session_record.metadata:
-                notes_data = session_record.metadata.get("notes", [])
+            if session_record.extra_data:
+                notes_data = session_record.extra_data.get("notes", [])
                 self.notes = [ReplayNote.from_dict(n) for n in notes_data]
             
             # 初始化状态
@@ -494,10 +494,10 @@ class SessionReplay:
                 return
             
             # 保存笔记到 metadata
-            if session_record.metadata is None:
-                session_record.metadata = {}
+            if session_record.extra_data is None:
+                session_record.extra_data = {}
             
-            session_record.metadata["notes"] = [n.to_dict() for n in self.notes]
+            session_record.extra_data["notes"] = [n.to_dict() for n in self.notes]
             session_record.updated_at = datetime.utcnow()
             
             session.commit()

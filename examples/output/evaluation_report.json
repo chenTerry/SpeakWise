@@ -1,0 +1,201 @@
+{
+  "report_type": "interview_evaluation_v0.3",
+  "generated_at": "2026-03-06T15:25:45.030703",
+  "template": "standard",
+  "candidate_info": {
+    "name": "李明",
+    "position": "高级后端工程师"
+  },
+  "interview_info": {
+    "domain": "技术面试",
+    "style": "friendly",
+    "duration": 30
+  },
+  "evaluation": {
+    "overall_score": 3.5,
+    "level": "B",
+    "summary": "表现良好，符合职位要求，有发展潜力；在创新思维、表达清晰度方面表现突出；沟通技巧、应变能力有待提升。",
+    "dimension_scores": {
+      "内容质量": {
+        "score": 3.5,
+        "weight": 0.15,
+        "comments": "表现良好",
+        "sub_scores": {
+          "相关性": 3.0,
+          "准确性": 3.0,
+          "深度": 3.0
+        }
+      },
+      "表达清晰度": {
+        "score": 3.6,
+        "weight": 0.13,
+        "comments": "表现良好",
+        "sub_scores": {
+          "逻辑性": 3.0,
+          "简洁性": 3.0,
+          "条理性": 3.0
+        }
+      },
+      "专业知识": {
+        "score": 3.6,
+        "weight": 0.18,
+        "comments": "表现良好",
+        "sub_scores": {
+          "技术深度": 3.0,
+          "经验": 3.0,
+          "解决问题能力": 3.0
+        }
+      },
+      "应变能力": {
+        "score": 3.3,
+        "weight": 0.12,
+        "comments": "表现良好",
+        "sub_scores": {
+          "意外问题处理": 3.0,
+          "灵活应对": 3.0,
+          "压力管理": 3.0
+        }
+      },
+      "沟通技巧": {
+        "score": 3.2,
+        "weight": 0.14,
+        "comments": "表现良好",
+        "sub_scores": {
+          "倾听": 3.0,
+          "表达": 3.0,
+          "互动质量": 3.0
+        }
+      },
+      "自信程度": {
+        "score": 3.5,
+        "weight": 0.13,
+        "comments": "表现良好",
+        "sub_scores": {
+          "语气": 3.0,
+          "确定性": 3.0,
+          "自我展示": 3.0
+        }
+      },
+      "创新思维": {
+        "score": 3.75,
+        "weight": 0.15,
+        "comments": "表现良好",
+        "sub_scores": {
+          "独特见解": 3.0,
+          "创造性": 3.0,
+          "批判性思维": 3.0
+        }
+      }
+    },
+    "strengths": [
+      "创新思维突出（innovative_thinking: 3.75）",
+      "表达清晰有条理（expression_clarity: 3.60）",
+      "专业知识扎实（professional_knowledge: 3.60）"
+    ],
+    "weaknesses": [],
+    "suggestions": [
+      "继续保持优秀的沟通习惯",
+      "学习影响力技巧，有效说服他人",
+      "继续保持灵活的思维方式，适应各种场景",
+      "学习在高压环境下发挥最佳水平"
+    ]
+  },
+  "detailed_feedback": {
+    "evaluation_dimensions": 7,
+    "total_answers": 6,
+    "total_questions": 7,
+    "dimension_breakdown": {
+      "content_quality": {
+        "dimension": "content_quality",
+        "score": 3.5,
+        "weight": 0.15,
+        "sub_scores": {
+          "相关性": 3.0,
+          "准确性": 3.0,
+          "深度": 3.0
+        },
+        "comments": "表现良好",
+        "evidence": [],
+        "improvement_suggestions": []
+      },
+      "expression_clarity": {
+        "dimension": "expression_clarity",
+        "score": 3.6,
+        "weight": 0.13,
+        "sub_scores": {
+          "逻辑性": 3.0,
+          "简洁性": 3.0,
+          "条理性": 3.0
+        },
+        "comments": "表现良好",
+        "evidence": [],
+        "improvement_suggestions": []
+      },
+      "professional_knowledge": {
+        "dimension": "professional_knowledge",
+        "score": 3.6,
+        "weight": 0.18,
+        "sub_scores": {
+          "技术深度": 3.0,
+          "经验": 3.0,
+          "解决问题能力": 3.0
+        },
+        "comments": "表现良好",
+        "evidence": [],
+        "improvement_suggestions": []
+      },
+      "adaptability": {
+        "dimension": "adaptability",
+        "score": 3.3,
+        "weight": 0.12,
+        "sub_scores": {
+          "意外问题处理": 3.0,
+          "灵活应对": 3.0,
+          "压力管理": 3.0
+        },
+        "comments": "表现良好",
+        "evidence": [],
+        "improvement_suggestions": []
+      },
+      "communication_skills": {
+        "dimension": "communication_skills",
+        "score": 3.2,
+        "weight": 0.14,
+        "sub_scores": {
+          "倾听": 3.0,
+          "表达": 3.0,
+          "互动质量": 3.0
+        },
+        "comments": "表现良好",
+        "evidence": [],
+        "improvement_suggestions": []
+      },
+      "confidence_level": {
+        "dimension": "confidence_level",
+        "score": 3.5,
+        "weight": 0.13,
+        "sub_scores": {
+          "语气": 3.0,
+          "确定性": 3.0,
+          "自我展示": 3.0
+        },
+        "comments": "表现良好",
+        "evidence": [],
+        "improvement_suggestions": []
+      },
+      "innovative_thinking": {
+        "dimension": "innovative_thinking",
+        "score": 3.75,
+        "weight": 0.15,
+        "sub_scores": {
+          "独特见解": 3.0,
+          "创造性": 3.0,
+          "批判性思维": 3.0
+        },
+        "comments": "表现良好",
+        "evidence": [],
+        "improvement_suggestions": []
+      }
+    }
+  }
+}

@@ -1,0 +1,230 @@
+{
+  "teams": [
+    {
+      "id": "team_ef12f6c81395",
+      "tenant_id": "tenant_8768d1518b35",
+      "name": "Engineering Team",
+      "description": "Software development team",
+      "status": "active",
+      "created_at": "2026-03-06T03:51:12.360050",
+      "updated_at": "2026-03-06T03:51:12.360052",
+      "owner_id": "user_001",
+      "member_count": 5,
+      "max_members": 20,
+      "settings": {},
+      "metadata": {}
+    },
+    {
+      "id": "team_48ac77cc6110",
+      "tenant_id": "tenant_3272d76627d7",
+      "name": "Engineering Team",
+      "description": "Software development team",
+      "status": "active",
+      "created_at": "2026-03-06T03:53:51.288819",
+      "updated_at": "2026-03-06T03:53:51.288820",
+      "owner_id": "user_001",
+      "member_count": 5,
+      "max_members": 20,
+      "settings": {},
+      "metadata": {}
+    },
+    {
+      "id": "team_5445e3952042",
+      "tenant_id": "tenant_3272d76627d7",
+      "name": "Engineering Team",
+      "description": "Software development team",
+      "status": "active",
+      "created_at": "2026-03-06T03:55:41.143810",
+      "updated_at": "2026-03-06T03:55:41.143811",
+      "owner_id": "user_001",
+      "member_count": 5,
+      "max_members": 20,
+      "settings": {},
+      "metadata": {}
+    },
+    {
+      "id": "team_6b1647c5bb80",
+      "tenant_id": "tenant_3272d76627d7",
+      "name": "Engineering Team",
+      "description": "Software development team",
+      "status": "active",
+      "created_at": "2026-03-06T05:54:47.668540",
+      "updated_at": "2026-03-06T05:54:47.668542",
+      "owner_id": "user_001",
+      "member_count": 5,
+      "max_members": 20,
+      "settings": {},
+      "metadata": {}
+    }
+  ],
+  "members": {
+    "team_ef12f6c81395": {
+      "user_001": {
+        "user_id": "user_001",
+        "team_id": "team_ef12f6c81395",
+        "role": "owner",
+        "joined_at": "2026-03-06T03:51:12.360064",
+        "permissions": [],
+        "metadata": {}
+      },
+      "user_002": {
+        "user_id": "user_002",
+        "team_id": "team_ef12f6c81395",
+        "role": "member",
+        "joined_at": "2026-03-06T03:51:12.363740",
+        "permissions": [],
+        "metadata": {}
+      },
+      "user_003": {
+        "user_id": "user_003",
+        "team_id": "team_ef12f6c81395",
+        "role": "member",
+        "joined_at": "2026-03-06T03:51:12.367711",
+        "permissions": [],
+        "metadata": {}
+      },
+      "user_004": {
+        "user_id": "user_004",
+        "team_id": "team_ef12f6c81395",
+        "role": "member",
+        "joined_at": "2026-03-06T03:51:12.372043",
+        "permissions": [],
+        "metadata": {}
+      },
+      "user_005": {
+        "user_id": "user_005",
+        "team_id": "team_ef12f6c81395",
+        "role": "member",
+        "joined_at": "2026-03-06T03:51:12.375917",
+        "permissions": [],
+        "metadata": {}
+      }
+    },
+    "team_48ac77cc6110": {
+      "user_001": {
+        "user_id": "user_001",
+        "team_id": "team_48ac77cc6110",
+        "role": "owner",
+        "joined_at": "2026-03-06T03:53:51.288833",
+        "permissions": [],
+        "metadata": {}
+      },
+      "user_002": {
+        "user_id": "user_002",
+        "team_id": "team_48ac77cc6110",
+        "role": "member",
+        "joined_at": "2026-03-06T03:53:51.292976",
+        "permissions": [],
+        "metadata": {}
+      },
+      "user_003": {
+        "user_id": "user_003",
+        "team_id": "team_48ac77cc6110",
+        "role": "member",
+        "joined_at": "2026-03-06T03:53:51.297187",
+        "permissions": [],
+        "metadata": {}
+      },
+      "user_004": {
+        "user_id": "user_004",
+        "team_id": "team_48ac77cc6110",
+        "role": "member",
+        "joined_at": "2026-03-06T03:53:51.302100",
+        "permissions": [],
+        "metadata": {}
+      },
+      "user_005": {
+        "user_id": "user_005",
+        "team_id": "team_48ac77cc6110",
+        "role": "member",
+        "joined_at": "2026-03-06T03:53:51.306384",
+        "permissions": [],
+        "metadata": {}
+      }
+    },
+    "team_5445e3952042": {
+      "user_001": {
+        "user_id": "user_001",
+        "team_id": "team_5445e3952042",
+        "role": "owner",
+        "joined_at": "2026-03-06T03:55:41.143821",
+        "permissions": [],
+        "metadata": {}
+      },
+      "user_002": {
+        "user_id": "user_002",
+        "team_id": "team_5445e3952042",
+        "role": "member",
+        "joined_at": "2026-03-06T03:55:41.148902",
+        "permissions": [],
+        "metadata": {}
+      },
+      "user_003": {
+        "user_id": "user_003",
+        "team_id": "team_5445e3952042",
+        "role": "member",
+        "joined_at": "2026-03-06T03:55:41.153234",
+        "permissions": [],
+        "metadata": {}
+      },
+      "user_004": {
+        "user_id": "user_004",
+        "team_id": "team_5445e3952042",
+        "role": "member",
+        "joined_at": "2026-03-06T03:55:41.157790",
+        "permissions": [],
+        "metadata": {}
+      },
+      "user_005": {
+        "user_id": "user_005",
+        "team_id": "team_5445e3952042",
+        "role": "member",
+        "joined_at": "2026-03-06T03:55:41.162283",
+        "permissions": [],
+        "metadata": {}
+      }
+    },
+    "team_6b1647c5bb80": {
+      "user_001": {
+        "user_id": "user_001",
+        "team_id": "team_6b1647c5bb80",
+        "role": "owner",
+        "joined_at": "2026-03-06T05:54:47.668553",
+        "permissions": [],
+        "metadata": {}
+      },
+      "user_002": {
+        "user_id": "user_002",
+        "team_id": "team_6b1647c5bb80",
+        "role": "member",
+        "joined_at": "2026-03-06T05:54:47.673296",
+        "permissions": [],
+        "metadata": {}
+      },
+      "user_003": {
+        "user_id": "user_003",
+        "team_id": "team_6b1647c5bb80",
+        "role": "member",
+        "joined_at": "2026-03-06T05:54:47.677505",
+        "permissions": [],
+        "metadata": {}
+      },
+      "user_004": {
+        "user_id": "user_004",
+        "team_id": "team_6b1647c5bb80",
+        "role": "member",
+        "joined_at": "2026-03-06T05:54:47.681874",
+        "permissions": [],
+        "metadata": {}
+      },
+      "user_005": {
+        "user_id": "user_005",
+        "team_id": "team_6b1647c5bb80",
+        "role": "member",
+        "joined_at": "2026-03-06T05:54:47.686192",
+        "permissions": [],
+        "metadata": {}
+      }
+    }
+  }
+}

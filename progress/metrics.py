@@ -122,7 +122,19 @@ class ProgressMetricsCalculator:
             SessionMetrics 对象
         """
         # 提取评估结果
-        eval_result = session_data.get("evaluation_result", {})
+        eval_result = session_data.get("evaluation_result") or {}
+        
+        # 如果是 JSON 字符串，解析为字典
+        if isinstance(eval_result, str):
+            try:
+                import json
+                eval_result = json.loads(eval_result) or {}
+            except (json.JSONDecodeError, TypeError):
+                eval_result = {}
+        
+        # 确保 eval_result 是字典
+        if not isinstance(eval_result, dict):
+            eval_result = {}
         
         # 计算各维度分数
         dimension_scores = {}
@@ -244,7 +256,7 @@ class ProgressMetricsCalculator:
         completed_sessions = len([s for s in recent_sessions if s.get("status") == "completed"])
         
         # 计算平均时长
-        total_duration = sum(s.get("duration_seconds", 0) for s in recent_sessions)
+        total_duration = sum(s.get("duration_seconds") or 0 for s in recent_sessions)
         avg_duration = total_duration / len(recent_sessions) if recent_sessions else 0.0
         
         # 计算平均分数
